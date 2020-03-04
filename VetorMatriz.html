@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <title>Vetores e Matrizes - Estrutura de Dados</title>
+        <meta name="description" content="Este é um site referente à estudos sobre vetores e matrizes em Estrutura de dados.">
+    </head>
+    <body>
+        <h1>Vetores e Matrizes - Estrutura de Dados</h1>
+        <ul>
+            <li><strong>Vetores</strong></li>
+                <p>Os vetores apresentam a capacidade de armazenar vários valores (dados) com uma única referênca de nome dado ao vetor, sendo diferenciado pelo índice do vetor. O índice de um vetor tem a numeração sempre iniciada em zero, ou seja, o primeiro elemento de um vetor é armazenado no índice 1 e assim por diante. <strong>O índice de um vetor identifica a posição de um eleento dentro do vetor</strong>.</p>
+                <p>Na linguagem C, os vetores são declarados com um par de <strong>colchetes</strong> após o nome da variável. O número inteiro entre o par de colchetes irá representar a quantidade de elementos que poder ser armazenados no vetor.</p>
+                <p>Vejamos a declaração de um vetor do tipo <i>int</i> com 10 elementos. Esta declaração significa que o vetor possui os elementos com índice de zero a 9 e que o vetor irá armazenar um número inteiro em cada elemento:</p>
+                <pre>
+            <strong>int</strong> vetor[10];
+            
+            Após a declaração e criação do vetor, basta trabalha-lo com valores a serem inseridos, seja de forma "crua":
+            
+            vetor[0] = <i>valorN-1</i>;
+            vetor[3] = <i>valorN</i>;
+            
+            Ou de forma abranjente:
+            
+            <strong>int</strong> i;
+            <strong>for</strong>(i=0; i menor 10; i++){
+                vetor[i] = <i>Valor</i>
+            }
+            
+            Dessa forma, os campos do vetores serão incrementados até que sua qunatidade máxima seja armazenada, como no exemplo real abaixo:
+            
+            <strong>int</strong> i, vetor[10], valor;
+            
+            <strong>for</strong>(i=0; i menor 10; i++){
+                <strong>printf</strong>("Informe o valor da posição %d",i+1);
+                <strong>scanf</strong>("%d",&valor);
+                vetor[i] = valor;
+            }
+                </pre>
+            <li><strong>Atividades</strong></li>
+            <br>
+                <ol>
+                    <li>Faça um programa em C que carregue um vetor de 10 elementos do tipo inteiro. O programa deve gerar dois vetores com 10 elementos do tipo inteiro a partir do vetor carregado, sendo um vetor com números pares e outro vetor com números impares. Utilize o operador de módulo (%) para determinar se um número é par ou impar. Qunado o número é par, o resto da divisão por 2 é igual a zero.</li>
+                    <br>
+                    <li>Faça um programa que carrega dois vetores com 5 números inteiros cada. Na sequênci, ordenar os vetores na ordem crescente. Para a ordenação, utilize o método da bolha. Imprimir um terceiro vetor com 10 posições em ordem crescente, resultante da instercalção dos dois vetores.</li>
+                </ol>
+            <hr>
+            <li><strong>Matrizes</strong></li>
+                <p>As matrizes são vetores com mais de uma dimensão, cujps elementos são acessados a partir do nome da matriz e dos índices. Normalmente, usam-se matrizes com até 3 dimensões, mas existem compiladores que podem trabalhar com matrizes de até 12 dimensões. Estando assim a matriz bidimensional (2 dimensões) a mais comum, sendo uma dimensão para as linhas e outra para as colunas.</p>
+                <p>Vejamos a declaração de uma matriz chamada <i>matriz</i> com <strong>3 linhas e 4 colunas</strong>, que armazena números reais. A matriz deve ter um <strong>índice1</strong> de 0 a 2 para <strong>referênciar as linhas</strong> e outro <strong>índice2</strong> para  <strong>referênciar as colunas</strong> (o tipo de dados coletados pela matriz é determinado pelo usuário, seja float ou int):</p>
+                <pre>
+            <strong>float</strong> matriz[3][4];
+            
+            Perceba que é muito semelhante a criação de vetores, com 2 compos de colchetes (Linhas e Colunas). Possuindo a seguinte forma:
+            <p><img src="https://sites.google.com/site/proffdesiqueiraed/_/rsrc/1472856777075/aulas/aula-1---introducao-a-estrutura-de-dados/Captura%20de%20tela%20de%202015-07-24%2017%3A19%3A21.png" alt="Descrição"></p>
+                </pre>
+                <p>Diante disso, a atribuição de valores a um elemento da matriz, deve conter as dimensões em que ele será inserido, ou seja, ao passar um valor, sua cordenada também deverá ser informada. Por exemplo, para atribuir o valor 4,5 ao elemento da segunda linha e terceira coluna da matriz, o comando seria o seguinte:</p>
+                <pre>
+            matriz[1][2] = 4,5;
+                   |  |
+                   |  V
+                   | Linha
+                   V
+                Coluna
+                
+            Assim como, de forma mais complexa, gerar valores para uma matriz a partir de um loop, o conceito será o mesmo que realizado em um vetor.
+                </pre>
+                <li><strong>Atividades</strong></li>
+                    <br>
+                    <ol>
+                        <li>Faça um programa em C que leia uma matriz de 5 linhas com 3 colunas para armazenar a pontuação de 5 atletas em 3 aparelhos. As notas são um número inteiro de 0 a 10. O programa deve listar para cada aparelho qual foi o atleta com a maior nota. O programa deve listar para cada atleta qual foi a sua menor nota nos 3 aparelhos.</li>
+                    </ol>
+        </ul>
+    </body>
+</html>

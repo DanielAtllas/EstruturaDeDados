@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <title>Ponteiros - Estrutura de Dados</title>
+        <meta name="description" content="Este é um site referente à estudos de Estrutura de Dados">
+    </head>
+    <body>
+        <h1>Ponteiros - Estruturas de Dados</h1>
+        <p>Para simplificar, um ponteiro é uma variável que <strong>armazena um endereço de memória</strong>, apontando para o mesmo. Todas as demais variáveis armazenam dados de algum dos tipos básicos da linguagem C. No entanto, um ponteiro indica um espaço de memória em particular que contem um endereço de memória.</p>
+        <p>A criação de um ponteiro é feita através da declaração de variáveis com o caracter <strong>*</strong> sucedido do nome da variável.</p>
+        <pre>
+    <strong>int</strong> *A;
+        </pre>
+        <p>Um ponteiro sempre aponta para o endereço de memória que contêm o tipo de dado usado na declaração do ponteiro. Assim, um ponteiro do tipo <i>int</i> somentepode apontar para um endereço que armazene um dado do tipo int;</p>
+        <ul>
+            <li><strong>Operadores</strong></li>
+                <p>Existem 2 operadores necessários relacionados a ponteiros:</p>
+                <ul>
+                    <li>& -> Obtém o endereço de memória ocupado por qualquer variável.</li>
+                    <li>* -> Possui duas funções: criar um ponteiro e fazer uma indireção referênciando o dado armazenado no endereço apontado pelo ponteiro.</li>
+                </ul>
+                <p>Seguem alguns exemplos desses conceitos:</p>
+                <pre>
+            <strong>Uso do operador &</strong>
+            
+            <strong>int main(void)</strong>{
+                <strong>int *</strong>pt, n;
+                n = 10;
+                pt = <strong>&</strong>n;
+                <strong>printf</strong>("Valor de n = %d",n);
+                <strong>printf</strong>("O endereço de n = %p",pt);
+                
+                <strong>return 0</strong>;
+            }
+            
+            <strong>Uso do operador *</strong>
+            
+            <strong>int main(void)</strong>{
+                <strong>int *</strong>pt, n;
+                pt = <strong>&</strong>n;
+                <strong>*</strong>pt = 10;
+                <strong>printf</strong>("Valor de n = %d",n);
+                <strong>printf</strong>("O endereço de n = %p",pt);
+                
+                <strong>return 0</strong>;
+            }
+                </pre>
+            <p>De forma resumida, imagine que um ponteiro possui <strong>duas capacidades de armazenamento</strong>, onde ele pode armazenar o <strong>endereço</strong> de alguma variável e o seu <strong>valor</strong>. Diante disso, temos que um ponteiro dado por <i>*p</i> em conjunto com uma variável <i>num</i>, pode receber tanto o valor que esta variável suporta como o seu endereço. Para que seu endereço seja armazenado, é dado a <strong>variável do ponteiro</strong> recebendo o <i>&</i> (indicador de endereçamento na memória), ou seja, <i>p = &num</i>. Por outro lado, para que o ponteiro receba o valor da variável <strong>o ponteiro do ponteiro</strong> receberá a prórpria variável, ou seja, <i>*p = num</i>.</p>
+            <p>Atente-se que uma vez declarada uma variável, seu endereço é imutável (a menos que comandos sejam realizados com este objetivo), porém, ao alterar o valor desta variável, automaticamente o valor apontado pelo ponteiro, também é alterado. Da mesma forma que uma vez declaro um ponteiro para uma variável, se alterado o valor do ponteiro do ponteiro, o valor da própria variável também será alterado. Para que não fique  confusa a explicação, segue abaixo um script que explica melhor os conceitos de ponteiro:</p>
+            <pre>
+        #include &lt;stdio.h>
+        #include &lt;stdlib.h>
+        #include &lt;locale.h>
+
+        /*
+            Este programa, terá como objetivo a realização de testes em ponteiros, para observar e entender o comportamento dos mesmos na memória e exibição de seus dados
+            enquanto programa.
+        */
+
+        int main() {
+            setlocale(LC_ALL,"portuguese");
+            int num,valor,valor2;
+            int*p;
+
+            num=55;
+            p=&num;
+            valor=*p;
+            valor2=p;
+
+            printf("\n\n Valor de num = %d",num); 	//Este é o valor que uma variável possui. Neste caso, a variável "num" com o valor "55".
+
+            printf("\n\n Valor de p = %d",p);		//A variável do ponteiro é o que recebe o endereço de um variável, ou seja, será um apontador para o endereço de memória
+                                                    //da variável. Neste caso, "p" é onde será armazenado o endereço de memória da variável "num".
+
+            printf("\n\n Valor de *p = %d",*p);		//O ponteiro em sí, funcionará como direcionador direto do valor de uma variável em que o endereço está armazenado, ou
+                                                    //seja, este será como um exibidor direto da variável apontada. Neste caso, "*p" receberá o valor "55", mesmo da 
+                                                    //variável "num".
+
+            printf("\n\n Valor de valorl = %d",valor); 
+
+            printf("\n\n Valor de valor2 = %d",valor2);
+
+            printf("\n\n\n ======================= \n\n\n");
+        /* 
+            Dessa forma, foi observado que com um ponteiro, é possível obter tanto o endereço quanto o valor de uma variável X. Agora, teremos como objetivo o estudo
+            da manipulação deste ponteiro, veremos se é possível alterar os valores e endereços de uma variável X através do ponteiro.
+        */	
+
+            //Situação I - Alterar o valor da variável e ver como o ponteiro se comporta
+            printf("\n \\\ SITUAÇÃO I ///\n");
+            num=20;
+            printf("\n\n Valor de num = %d",num);
+            printf("\n\n Valor de p = %d",p);
+            printf("\n\n Valor de *p = %d",*p);
+
+            //Situação II - Alterar o valor do *p e ver como o restante se comporta
+            printf("\n\n\n \\\ SITUAÇÃO II ///\n");
+            *p=125;
+            printf("\n\n Valor de num = %d",num);
+            printf("\n\n Valor de p = %d",p);
+            printf("\n\n Valor de *p = %d",*p);
+
+
+            printf("\n\n\n ======================= \n\n\n");
+
+        /*
+            Ou seja, pode-se concluir que caso o usuário/programdor altere o valor da variável (situação I) o endereço de memória permanecerá o mesmo, porém o valor do 
+            ponteiro será igualado ao da variável. Da mesma forma que ao se alterar o valor do ponteiro (situação II), o valor da variável também é mudado, permanecento
+            o endereço de memória imutável em qualquer situação.
+            Portanto, alterar o valor do ponteiro, irá automaticamente alterar o valor da variável em que aquele ponteiro aponta!
+        */	
+
+            return 0;
+        }
+            </pre>
+            <li><strong>Passagem de parâmetros</strong></li>
+                <p>Existem 2 maneiras de realizar a passagem de parâmetros para uma função: por valor e referência. A linguagem C permite apenas passagem por valor. Entretanto, pode-se usar ponteiro para simular uma passagem por referência.</p>
+                <p>A passagem de parâmetros por valor, cria uma cópia de conteúdos para serem utilizados enquanto função. Logo, quando a execução termina, essas cópias são destruídas  e suas mudanças destrídas (Após enviar os dados ao main principal).</p>
+                <p>Já a passagem de parâmetros por referência trabalha com o conteúdo orginal do main, sem a criação de cópias. Logo, quando a execução da função é finalizada, os valores ainda permanecem. Na linguagem C, isso deve se realizado por ponteiros, onde cópias de apenas os endereços de memória são feitas.</p>
+                <p>Segue um exemplo abaixo das duas situações, onde uma função é feita para gerar o triplo de 2 números:</p>
+                <pre>
+    <strong>1. Parâmetros por valores</strong>
+            
+           <strong>#include &lt;stdio.h></strong>
+
+            <strong>void</strong> calculo(<strong>int</strong> x, <strong>int</strong> y);
+
+            <strong>int main(void) {
+                int</strong> x, y;
+                x = 3;
+                y = 5;
+                calculo(x, y);
+                <strong>getchar()</strong>;
+            }
+            
+            <strong>void</strong> calculo(<strong>int</strong> x, <strong>int</strong> y) {
+                x = x * 3;
+                y = y * 3;
+                <strong>println</strong>(“x = %d y = %d” , x, y);
+            }
+            
+    --------------------
+    
+     <strong>2. Parâmetros por referência</strong>
+            
+           <strong>#include &lt;stdio.h></strong>
+
+            <strong>void</strong> calculo(<strong>int *</strong>x, <strong>int *</strong>y);
+
+            <strong>int main(void) {
+                int</strong> x, y;
+                x = 3;
+                y = 5;
+                calculo(&x, &y);
+                <strong>println</strong>(“x = %d y = %d” , x, y);
+                <strong>getchar()</strong>;
+            }
+            
+            <strong>void</strong> calculo(<strong>int *</strong>x, <strong>int *</strong>y) {
+                <strong>*</strong>x = <strong>*</strong>x * 3;
+                <strong>*</strong>y = <strong>*</strong>y * 3;
+            }
+                            </pre>
+            <li><strong>Ponteiros e Arrays</strong></li>
+                <p>Arrays são diretamente ligadas a ponteiros, utilizar o nome de um array sem um subscrito informa o endereço da primeira posição do array, como no exemplo a seguir:</p>
+                <pre>
+        <strong>int</strong> a[5], <strong>*</strong>pt1, <strong>*</strong>pt2;
+        
+        pt1 = a;
+        
+    Isso faz o mesmo sentido quanto pt1 = &a[0];
+                </pre>
+                <p>A passagem de um arraypara uma função requer o uso de referência. Copiando apenas o endereço de memória ocupado pela primeira posição do array, segue um exemplo abaixo com tais concitos:</p>
+                <pre>
+       <strong>#include &lt;stdio.h></strong>
+
+        <strong>void</strong> preenche(<strong>int*</strong> p);
+
+        <strong>int main(void) {
+            int</strong> v[3];
+            preenche(v);
+            <strong>return</strong> 0;
+        }
+                </pre>
+        </ul>
+    </body>
+</html>

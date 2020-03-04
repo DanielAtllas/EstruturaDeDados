@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <title>Listas - Estrutura de Dados</title>
+        <meta name="description" content="Este é um site referente à estudos de Estrutura de Dados">
+    </head>
+    <body>
+        <h1>Listas - Estrutura de Dados</h1>
+        <p>Uma lista na programação, se consiste no conceito semelhante ao de vetores, onde N blocos que armazenam valores são criados. O lance, é que nas listas, esses blocos se ligam entre sí, dessa forma, o programa consegue percorrer por todos os valores dessa lista, isto porque cada bloco, além de receber um valor, recebe também um ponteiro apontador para o bloco seguinte. Ou seja, para o uso de listas, o uso de <strong>ponteiros</strong> também será usado, isso porque cada célula (bloco) da lista recebe um valor X e um ponteiro que aponta para o valor seguinte da lista.</p>
+        <p>Em uma lista, para cada novo elemento/nó inserido em célula (bloco), é gerada uma <strong>alocação dinâmica</strong> para ele, ou seja, para cada novo valor, será alocado um espaço na memória para armazena-lo (Diante disso, é possível deduzir que a quantidade de memória gasta por uma lista, é proporcinal a quantidade de elementos/nós que ela possui). Portanto, não são realizados acessos diretos aos elementos/nós (valores) da lista, mas sim à seus endereços.</p>
+        <p>Por esta lista receber ponteiros que indicam o endereço dos elementos/nós seguintes da mesma, ela é chamada de <strong>lista encadeada</strong>. Para que o conceito seja melhor explicado, segue uma imagem abaixo com a ilustração de uma lista encadeada:</p>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRJYCoXkN4cXch6cPD_J18ujFABMDlboxlYRi0vakZXeYhr3Gc6" alt="Descrição">
+        <p>Mas eis a questão, se é possível percorrer toda a lista pelo fato do elementos/nós N ter o ponteiro apontador para N+1, como é possível identificar o primeiro valor da lista? Para isso, é criado um primeiro ponteiro, também conhecido como <strong>head</strong>, que receberá apenas o endereço apontador para o primeiro valor da lista. Perceba também que na imagem ilustrada acima, o último valor da lista está apontado para <strong>NULL</strong>. Isso se dá pelo fato de o programador criar uma lista de valores infinitos, ou seja, uma lista que apenas termine quando o usuário desejar. Para isso, a lista não pode ter um valor final.</p>
+        <p>De forma resumida, entenda que a lista encadeada possui um ponteiro para o primeiro elemento/nó. Do primeiro elemento, pode-se alcançar o segundo e assim por diante. O último elemento da lista possui um ponteiro "inválido", com o valor <i>NULL</i>, tornando a lista "infinita".</p>
+        <ul>
+            <li><strong>Características</strong></li>
+                <ol>
+                    <li>As listas são implementadas através de variáveis dinâmicas, ou seja, varáveis que são criadas enquanto o programa está em execução, por alocação dinâmica na memória.</li>
+                    <br>
+                    <li>Os nós que compões a lista devem ser do tipo <i>struct</i>, que conterá um valor e ponteiro. </li>
+                    <br>
+                    <li>O acesso aos elementos da lista é sempe sequencial, ou seja, para que o 3º valor seja acessado, deverá ser percorrido pelo 1º e pelo 2º valor antes.</li>
+                    <br>
+                    <li>As listas encadeadas podem ser simplesmente encadeadas (um único apontador por célula) ou duplamente encadeadas (2 apontadores, para o elemento anterior e para o sucessor).</li>
+                </ol>
+        </ul>
+        <p>Além disso, existem algumas funcionalidades que toda lista deve ter disponível oara seus usuários, ou seja, o programa que utiliza de uma lista encadeada, deve conter as seguintes funções para a manipulação da mesma enquanto programa:</p>
+        <ol>
+            <li><strong>Inserção de elemento</strong> - Esta função pode também ser dividida em 3 partes, onde o programador dará a possibilidade de inserir um elemento no <strong>começo</strong>, no <strong>fim</strong> ou na <strong>posição que desejar</strong> da lista.</li>
+            <br>
+            <li><strong>Excluir elemento</strong> - Possibilidade esta em que o usuário poderá retirar um elemento X da lista. Podendo também seguir os princípios da função citada acima, com possibilidade de inserção no início, fim ou na posição desejada.</li>
+            <br>
+            <li><strong>Exibição</strong> - A função de exibição irá mostrar o corpo da atual lista na tela do usuário. Onde o programador pode aumentar as possibilidades, exibindo toda a lista ou até mesmo buscando um elemento específico. Esta função entra em conjunto com a possibilidade de verificação de elemento, pois dessa forma, o usuário poderá verificar se um elemento X já está inserido na lista.</li>
+        </ol>
+        <p>A criação de uma lista encadeada pode ser um tanto complexa para a implementação. Perceba que em seu conceito, é na verdade bem simples o entendimento, pois são basicamente valores ligados entre sí. Porém, a criação do script para isso não é tão simples. Diande disso, segue um exemplo abaixo de uma lista encadeada (Para medidas de ajuda, recomenda-se organizar em passos o que será feito):</p>
+        <ol>
+            <strong><li>Criação da <i>struct</i></li></strong>
+                <p>Como dito anteriormente, um bloco da lista deverá conter 1 elemento e no mínimo 1 ponteiro apontador:</p>
+                <pre>
+            <strong>struct</strong> no{
+                <strong>int</strong> elemento;
+                <strong>struct</strong> no *prox;
+            };
+            <strong>typedef struct</strong> no lista;
+                </pre>
+            <strong><li>Criação da lista</li></strong>
+                <p>Este passo fará a criação da lista, que consiste basicamente em setá-la com um valor <i>NULL</i> inicial:</p>
+                <pre>
+            lista *cria(<strong>void</strong>){
+                <strong>return</strong> NULL;
+            }
+                </pre>
+            <strong><li>Inserção de elemento</li></strong>
+                <p>Uma vez criada a lista, será possível inserir elementos à ela, onde para cada elemento inserido, deve ser realizada uma alocação dinâmica na memória e encadeá-lo na lista. Deve-se notar que o ponteiro que representa a lista deve ter seu valor atualizado, pois a lista deve passar a ser representada pelo ponteiro apontador para o novo primeiro elemento, ou seja, um ponteiro que apontará para o primeiro valor da lista. Por essa razão, a função recebe como parâmetros a própria lista (struct) como ponteiro e o leitor do novo elemento:</p>
+                <pre>
+            lista *insere(lista *l, int i){
+                //Alocação dinãmica do valor
+                lista *novo;
+                *novo = (lista *)<strong>malloc</strong>(<strong>sizeof</strong>(lista));
+                //inserção do valor
+                novo->valor = i;
+                //apontador para o próximo elemento
+                novo->prox = l;
+                <strong>return</strong> novo;
+            }
+                </pre>
+            <strong><li>Exibição da lista</li></strong>
+                <p>Esta função se torna bem simples, onde basicamente será gerado um <i>loop</i> que percorrerá todos os valores da lista e exibi-los:</p>
+                <pre>
+            lista *exibir(lista *l){
+                //Verificação de lista vazia
+                <strong>if</strong>(l == NULL){
+                    <strong>printf</strong>("\nTentou imprimir uma lista vazia");
+                    <strong>return</strong> 1
+                }<strong>else</strong>{
+                    //variável que percorrerá
+                    lista *aux;
+                    aux = lista->prox;
+                    <strong>printf</strong>("\n LISTA:  ");
+                    <strong>while</strong>(aux != NULL){
+                        <strong>printf</strong>("%d",aux->elemento);
+                        aux = aux->prox;
+                    }
+                }
+            }
+                </pre>
+            <strong><li>Excluir elemento</li></strong>
+                <p>Esta é considerada a função mais complexa do programa, pois ao retirar um elemento, toda a lista deve ser restruturada novamente para posicionar o bloco vazio. Tem como parâmetros de entrada a lista e o valor do elemento que será retirado.</p>
+                <p>A complexidade se dá exatamente pelo fato da restruturação da lista, pois caso o primeiro elemento seja removido, o segundo deve assumir seu lugar. Assim como se o último ou do meio for removido, seu antecessor deverá assumir a nova posição. Diante disso, o primeiro a ser feito, é localizar em que posição o elemento se encontra:</p>
+                <pre>
+            lista *remove(lista *l, int valor){
+                //ponteiro para armazenar valor que ocupará o novo espaço
+                lista *ant = NULL;
+                //ponteiro para percorrer a lista
+                lista *aux = l;
+                <strong>if</strong>(l != NULL){
+                    //Procurar elemento na lista
+                    <strong>while</strong>(aux != NULL && aux->elemento != valor){
+                        ant = aux;
+                        aux = aux->prox;
+                    }
+                    //Se aux for null, o valor não se encontra
+                    <strong>if</strong>(aux == NULL){
+                        <strong>return</strong> l;
+                    }
+                    //
+                }
+            }
+                </pre>
+        </ol>
+    </body>
+</html>

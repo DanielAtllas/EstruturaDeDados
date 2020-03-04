@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <title>Aloc. Dinâmica - Estrutura de Dados</title>
+        <meta name="description" content="Este é um site referente à estudos de Estrutura de Dados">
+    </head>
+    <body>
+        <h1>Alocação Dinâmica - Estrutura de Dados</h1>
+        <p>Existem 2 formas  de alocações de dados em memória, sendo elas <strong>aloc. estática</strong> e <strong>aloc. dinâmica</strong>, onde:</p>
+        <ul>
+            <li><strong>Alocação Estática</strong> - ocorre em tempo de compilação, ou seja, no momento em que se define uma variável ou estrutura e o seu tipo/tamanho. Nesse tipo de alocação, ao se executar um programa, é reservada uma memória necessária para utilizar as variáveis e estruturas, ficando disponíveis até o termino de execução do mesmo. Logo, ao ser encerrado, a memória desaclopa essas caixas reservadas para as variáveis.</li>
+            <li><strong>Alocação Dinâmica</strong> -ocorre em tempo de execução, ou seja, as variáveis e estruturas não declaradas sem a necessidade de se definir seu tamanhp, pois nenhuma memória será reservada enquanto o prorama estiver em execução. Logo, durante o programa, no momento em que uma variável/estrutura precisar ser utilizada, será alocada em uma caixa da memória e logo após realizar seu objetivo, essa alocação se torna vazia novamente.</li>
+        </ul>
+        <p>Pode-se dizer que vetores e matrizes são estruturas estáticas e por isso é necessária a definição da quantidade de posições. Já algumas linguagens, permitem criar vetores dinâmicos por meio do uso de ponteiros, reservando sua memória enquanto o programa é executado.</p>
+        <ul>
+            <li><strong>Alocação Dinâmica de Memória</strong></li>
+                <p>Na declaração de um vetor, é preciso dimensioná-lo, o que significa que se deve a necessidade a quantidade de espaço necessária, ou seja, devendo ser definido o número máximo de elementos no vetor (Por razões assim, é aconselhável a atribuição do <strong>DEFINE</strong> definindo uma válor máximo). Este pré-dimensionamento é uma fator de limitação da programação, por exemplo, ao desenvolver um programa que cálcula a média das notas de uma prova, deverá ser previsto o número máximo de alunos.</p>
+                <p>Diante disso, uma solução é definir o vetor com um número extremamente alto como medida de prevenção que a quantidade de elementos não ultrapasse o definido, porém, isso gerência uma perca/desperdício de memória. Felizmente, a linguagem C oferece meios de requisitar espaços de memória em tempo de execução que é usando alocação dinâmica de memória. Dessa forma, seria possível consultar o número de alunos da turma e fazer alocação dinamicamente, sem desperdício de memória, no exemplo citado.</p>
+            <li><strong>Uso da Memória</strong></li>
+                <p>Pode-se dizer que existem 3 maneiras de reservar espaço de memória para o armazenamento de informações, sendo eles:</p>
+                <ol>
+                    <li>Uso de <strong>variáveis globais</strong> e estáticas, onde o espaço reservado para uma variável existe enquanto o programa estiver sendo executado.</li>
+                    <br>
+                    <li>Uso de <strong>variáveis locais</strong>, nesse caso, o espaço existe apenas enquanto a função que a declarou estiver sendo executada, liberando o espaço quando a função for encerrada. Por esta razão, a função não pode faze referência ao espaço local da função chamada.</li>
+                    <br>
+                    <li>Já a terceira opção, é <strong>requisitar ao sistema, um espaço de um determinado tamanho</strong>. Esta é a chamada alocação dinãmica, onde esse espaço alocado permanece reservado até que seja explicidamente liberado pelo programa.</li>
+                </ol>
+                <p>A partir do momento em que liberamos o espaço, ele está disponível para ser usados de outras formas. Se o programa não liberar um espaço alocado, ele será automaticamente liberado quando o programa encerrar. Porém, está é uma boa prática que deve ser seguida, pois o recurso da memória é compartilhado por outros programas e pelo S.O. Quando requisitado ao Sistema Operacional para executar um determinado programa, o código em linguagem de máquina do programa deve ser carregado na memória, reservando também, os espaços necessários para armazenar as variáveis globais e estáticas que foram declaradas no programa.</p>
+                <p>O restante da memória livre é utilizado pelas variáveis locais e pelas variáveis alocadas dinâmicamente. Cada vez que uma função é chamada, o sistema reserva o espaço necessário para as variáveis locais da função. Esse espaço chama-se <strong>contexto de execução</strong> e pertence à pilha de execução, já quando a função é encerrada, é desempilhado. Se a pilha tentar crescer além do espaço disponível existente, dizemos que ela "estourou" e o programa gera erro. Da mesma forma se o espaço livre de memória for menor do que o espaço requisitado dinamicamente, a alocação não é feita.</p>
+            <li>Funções para alocação dinâmica de memória</li>
+                <p>Na linguagem C, esta alocação dinâmica pode ser realizada com apenas 4 chamadas de funções, sendo elas:</p>
+                <ul>
+                    <li>void *malloc();</li>
+                        <p>A função <strong>malloc</strong> permite que seja feita a alocação de uma nova área de memória para a estrutura. Deve-se informar para a função a quantidade de bytes para a alocação. A função irá retornar, caso exista memória suficiente, um endereço que deve ser colocado em uma varável do tipo <strong>ponteiro</strong>.</p>
+                        <p>Como a função retorna um ponteiro para o tipo <i>void</i>, deve-se utilizar o operador de molde, tranformando este endereço para o tipo de ponteiro desejado.</p>
+                    <li>void *calloc();</li>
+                        <p>A função <strong>calloc</strong> tem a mesma funcionalidade da <i>malloc</i>, exceto que devem ser fornecidos o tamanho da área e a quantidade de elementos. Em vez de se alocar uma quantidade de bytes através da função <i>malloc</i>, pode-se usar desta função e especificar a quantidade de blocos de um determinado tamanho. Funcionalmente, a alocação irá correr de maneira idêntica.</p>
+                    <li>void *realloc();</li>
+                        <p>A função <strong>realloc</strong> permite que uma área previamente alocada seja aumentada ou diminuida. Às vezes é necessário redimensionar uma área alocada. Para isto, deve-se usar desta função, passando para ela o ponteiro retornado pela função <i>malloc</i> e a indicação do novo tamanho. A realocação de memória, pode resultar na troca de vlocos na memória.</p>
+                    <li>free();</li>
+                        <p>A função <strong>free</strong> libera uma área criada pelas funções anteriores. Quando não se deseja mais uma área alocada, deve-se liberá-la através da função <i>free</i>, deve-se ser passado para a função o endereço, que se deseja liberar, que foi devolvido quando a alocação da memória ocorreu.</p>
+                </ul>
+            <li><strong>Usando as funções da biblioteca padrão para Alocação Dinâmica</strong></li>
+            <p>Um vetor, nada mais é do que um ponteiro com alocação estática de memória, ou seja, ao se declarar um vetor como:</p>
+            <pre>
+       <strong>int</strong> <i>vetor[10]</i>
+       
+       a realização é equivalente a: 
+       
+       <strong>int *</strong>vetor vetor=(<strong>int *</strong>)<strong>malloc</strong>(10 * <strong>sizeof(int *))</strong>;
+            </pre>
+            <p>Existem funções que etão presentes na biblioteca padrão <strong>stdlib</strong> e que permitem alocar e liberar memória dinamicamente. A função <strong>malloc</strong> recebe como parâmetros do número de bytes que se deseja alocar e retornar o endereço de memória inicial da área alocada.</p>
+            <p>Para exemplificar, vamos considerar a alocação dinâmica de um vetor de inteiros com 10 elementos. Como a função <i>malloc</i> tem como valor de retorno o endereço da área alocada e se deseja armazenar valores inteiros nessa área, devemos declarar um ponteiro de mesmo tipo para receber o enedereço inicial do espaço alocado:</p>
+            <pre>
+        <strong>int *</strong>v;
+        
+        v = <strong>malloc</strong>(10*4);
+            </pre>
+            <p>Após esse comando, se a alocação for bem sucedida, o ponteiro <i>v</i> armazenará o endereço inicial de uma área de memória com capacidade de 10 valores inteiros. Podemos então tratar <i>v</i> como um vetor, pois se <i>v</i> aponta para o início da área alocada, sabemos que <i>v[0]</i> acessa o espaço do primeiro elemento armazenado e assim por diante.</p>
+            <p>A forma como trabalhamos com variáveis declaradas dinamicamente, sejam variáveis simples ou vetores, é a mesma. Podemos atribuir valores, ler dados do teclado, imprimir o conteúdo destas variáveis, etc. Devemos contudo sempre lembrar que estas variáveis são ponteiros e devem portanto ser tratadas como tal.</p>
+            <li><strong>Operador sizeof()</strong></li>
+            <p>No exemplo mostrado, consideremos que um inteiro ocupa 4 bytes, para ficarmos independentes de compiladores e máquinas, usa-se do operador <i>sizeof()</i>, o qual retorna o tamanho necessário na memória para um determinado tipo de dado. Ele deve sempre ser usado em conjunto com a função <i>malloc</i> para que o código fique independente dos compiladores. Isso ocorre porque dependendo da versão do compilador ou da máquina, o tamanho necessário na memória para um determinado tipo de dado pode variar de um compulador para outro (ou seja, o <i>sizeof()</i> possui a função de retornar o número de bytes de um determinado tipo):</p>
+            <pre>
+        v = <strong>malloc</strong>(10*<strong>sizeof(int)</strong>)
+            </pre>
+            <li><strong>O operador de molde</strong></li>
+            <p>Além disso, devemos salientar que a função malloc é usada para alocar espaço para armazenar valores de qualquer tipo. Por esse motivo, malloc retorna um ponteiro genérico, para um tipo qualquer, representado por void*, que deve ser convertido automaticamente pela linguagem para o tipo apropriado na atribuição. No entanto, é comum fazer a conversão utilizando o operador de molde de tipo (cast). O comando para a alocação do vetor de inteiros fica então </p>
+            <pre>
+        v = (<strong>int *)malloc</strong>(10*<strong>sizeof(int)</strong>);
+            </pre>
+            <p>Assim o ponteiro <i>v</i> aponta para o endereço inicial de uma área contínua de memória para 10 inteiros. O operador <i>sizeof()</i> obtém o tamanho em bytes do tipo int e o operador de <i>cast (int*)</i>, converte o ponteiro genérico retornado por <i>malloc</i> para um ponteiro do tipo <i>*int</i>.</p>
+            <li><strong>Liberando a memória alocada dinamicamente</strong></li>
+            <p>Para liberar um espaço de memória alocado dinamicamente, suamos a função <i>free</i>, essa recebe como parâmetro o ponteiro da memória aser liberada:</p>
+            <pre>
+        <strong>free</strong>(v);
+            </pre>
+            <p>Só é possível passar para afunção <i>free</i> um endereço de memória que tenha sido alocado dinamicamente, ou seja, ele precisa ter sido inicializado com o retorno da função <i>malloc</i> anteriormente.</p>
+        </ul>
+        <p>Um exemplo que pode ser obtido com o uso de alocação dinâmica, seria agregar a um ponteiro a capacidade de N posições, que não sejam definidas, ou seja, tornar este ponteiro um vetor com uma quantidade infinita de espaços sem que memória desnecessária seja utilizada:</p>
+        <pre>
+#include stdio.h>
+#include conio.h>
+#include stdlib.h>
+
+int main(){
+	int *vetor;
+	int Qtd, i;
+	
+	vetor = (int *)malloc(Qtd*sizeof(int))
+	//Dessa forma, o ponteiro vetor recebe uma alocação na memória com Qtd sendo a quantidade de posições deste ponteiro/vetor.
+	//Ou seja, a quantidade de posições que este ponteiro/vetor terá, será definido por Qtd, podendo aumentar ou diminuir sempre que desejado.
+
+	if(!vetor){
+		printf("\n **Memória Insuficiente** \n");
+		exit;
+	}
+	
+	.
+	.
+	.
+
+	return 0;
+}
+
+        </pre>
+        <p>Para exemplificar o uso de alocação dinâmica, o programa a seguir realiza o cálculo da média e da variância, lendo o número de valores fornecidos, alocando um vetor dinamicamente, capturando os valores e realizando os cálculos:</p>
+        <pre>
+#include stdio.h>
+#include conio.h>
+#include stdlib.h>
+
+
+main() {
+
+    int i, QtdNotas;
+    float *vetor;
+    float med, var;
+    
+    printf("Quantas notas serão lidas?: ");
+    scanf("%i",&QtdNotas);
+
+    /*alocação dinâmica*/
+    vetor = (float*) malloc (QtdNotas*sizeof(float));
+
+    /* tratamento de erro para alocação dinamica de memoria mal sucedida */
+    if(vetor == NULL) {
+        printf("Memória Insuficiente");
+        return 1;
+    }
+
+    /*leitura dos valores*/
+    for(i=0; i menor QtdNotas; i++) {
+        printf("Entre com a nota %i: ",i);
+        scanf("%f", &vetor[i]);
+    }
+
+   /* Calculo da media e da variancia */
+    med = media(QtdNotas,vetor);
+
+    /* Impressao do resultado */
+    printf("Media: %.2f Variancia: %.2f \n", med);
+    getche();
+
+    /*libera memória*/
+    free(vetor);
+    return 0;
+}
+
+
+/* Função para cálculo da média */
+
+float media(int QtdNotas, float *vetor) {
+    int i;
+    float s = 0.0f;
+    for(i=0; i menor QtdNotas; i++)
+        s = s + vetor[i];
+    return s/QtdNotas;
+}
+
+return 0;
+    }
+
+        </pre>
+    </body>
+</html>

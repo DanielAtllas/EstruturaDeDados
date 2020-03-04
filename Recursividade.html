@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <title>Recursividade - Estrutura de Dados</title>
+        <meta name="description" content="Este é um site referente à estudos de Estrutura de Dados">
+    </head>
+    <body>
+        <h1>Recursividade - Estrutura de Dados</h1>
+        <p>Este é o processo de definir algo em termos de si mesmo, como uma definição circular, onde o conceito está se baseia na <strong>execução de algo que se executa</strong>. Imagine uma função que armazena o valor de índice e esta função deverá ser rodada até que complete um valor de 10 índices. Diante disso, o processo de recursividade faz com que essa mesma função chame a sí mesma 10x até que seu objetivo seja realizado. Na computação, o conceito de recursividade é amplamente utilizado, esendo um recurso de progrmação que deve ser usado com sabedoria, isto porque consome muitos recursos de execução (CPU  e processamento), pois a cada chamada de um função recursiva, é criado um novo contexto de execução para conter as variáveis, parâmetros e o código da função a ser executado, processo esse que consome uma alta capacidade dos recursos de memória.</p>
+        <p>Na linguagem C, as funções podem chamar a sí mesmas, sendo recursiva se um comando em seu corpo à chama. Um exemplo simples deste funcionamento é para o cálculo de fatorial, que calcula o fatorial de um inteiro N. O fatorial de N é o produto de todos os números inteiros entre 1 e N (3! = 1x2x3 = 6). O programa abaixo apresenta uma versão interativa para cálculo do fatorial de um número:</p>
+        <pre>
+    <strong>int</strong> fatorial(<strong>int</strong> n){
+        <strong>int</strong> t,f;
+        f = 1;
+        <strong>for</strong>(t=1; t&lt;=n; t++){
+            f=f*t;
+        } 
+        <strong>return</strong> f;
+    }
+        </pre>
+        <p>Mas múltiplicar <i>n</i> pelo produto de todos os inteiros a partir de n-1 até 1 resulta no produto de todos os inteiros de n a 1, ou seja:</p>
+        <ul>
+            <li>0! = 1</li>
+            <li>1! = 1*0!</li>
+            <li>2! = 2*1!</li>
+            <li>3! = 3*2!</li>
+            <li>4! = 4*3!</li>
+        </ul>
+        <p>Resumindo, o conceito de fatorial pode ser dado por: n! = 1, se n = 0 e n! = *(n-1)! se n > 0. O programa abaixo mostra a versão recursiva do programa fatorial:</p>
+        <pre>
+    <strong>int</strong> fatorial(<strong>int</strong> n){
+        <strong>int</strong> t,f;
+        <strong>if</strong>(n == 1 || n == 0){
+            <strong>return</strong> 1;
+        }<strong>else</strong>{
+            f = n * fatorial(n-1);
+            <strong>return</strong> f;
+        }
+    }
+        </pre>
+        <p>Perceba que a função chama a sí mesma no <i>else</i>, este é o conceito da recursividade, onde a função continuará a rodar como em um loop, até que seu objetivo seja satisfeito. Explicando o código acima, quando a função é chamada com argumento de 1, a função devolve 1. Caso contrário, ela devolve o produto de <i><strong>fatorial(n-1)*n</strong></i> e isso acontece até que n se iguale a 1.</p>
+        <p>Para que facilite o entendimento, determine o valor de n = 6. Para calcular o seu fatorial, o computador tem de calcular o primeiro o fatorial de 5 e para calcular o fatorial de 5, precisa-se calcular o fatorial de 4 e assim por diante até que que seja calculado o valor 1, pois o fatorial de 1 é 1 e isso é imutável (ou seja, para esse cálculo e uso de recursividade, será preciso uma âncora/válvula de escape, um valor imutável para a função). Logo, tento o fatorial de 1, é possível voltar e calcular o fatorial de 2 e tendo o de 2 é possível calcular o fatorial de 3 e assim por diante até que seja obtido o fatorial de N.</p>
+        <p>Para que seu entendimento seja ainda mais claro, segue um esquema do que ocorre quando o programa é iniciado:</p>
+        <pre>
+    6 * fatorialr(5)
+    6 * 5 * fatorialr(4)
+    6 * 5 * 4 * fatorialr(3)
+    6 * 5 * 4 * 3 * fatorialr(2)
+    6 * 5 * 4 * 3 * 2 * fatorialr(1)
+    6 * 5 * 4 * 3 * 2 * 1
+    6 * 5 * 4 * 3 * 2
+    6 * 5 * 4 * 6
+    6 * 5 * 24
+    6 * 120   987 - 720 = 267 + (226+170+25+90)
+    720
+        </pre>
+        <ul>
+            <li><strong>Custo de memória</strong></li>
+                <p>Quando uma função chama a sí mesma, novos parâmetros e variáveis são alocados na pilha, sendo criado um novo contexto de execução para as variáveis e o cósigo da função é executado com essas novas variáveis. Entenda, uma chamada de função recursiva não faz uma nova cópia da  função, apenas os argumentos são novos.</p>
+        </ul>
+    </body>
+</html>

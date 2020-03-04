@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <title>Projetos- Estrutura de Dados</title>
+        <meta name="description" content="Este é um site referente à estudos de Estrutura de Dados">
+    </head>
+    <body>
+		<h1>Projetos - Estrutura de Dados </h1>
+		<p> Basicamente, um projeto é constituído de um título e <strong>files</strong> que constituem o projeto, sendo eles:</p>
+		<ul>
+			<li>main.c</li>
+			<li>projeto.c</li>
+				<p>Implementação de funções que gerem os main</p>
+			<li>projeto.h</li>
+				<p>Constituído por protótipos, tipos e etc</p>
+			<li>tools.c</li>
+				<p>Implementação de funções genéricas usadas em todos os tipos programas/projetos (Como MENU's que sirvam para N projetos)</p>
+			<li>tools.h</li>
+				<p>Constituído por protótipos, tipos e etc de funções genéricas usadas em todos os tipos programas/projetos (Como MENU's que sirvam para N projetos)</p>
+		</ul>
+        <p>Portanto, um projeto faz-se necessário para uma melhor divisão do programa em sí, pois dessa forma, o programador poderá separar em <i>files</i> as partes do corpo de seu programa, com o objetivo de facilitar manutenção e até mesmo a disponibilização de seus códigos fontes para terceiros.</p>
+		<p>Diante disso, um projeto será então formado por basicamente 3 sourcers e 2 headers (sendo os <i>files</i> citados acima), onde:</p>
+		<ul>
+			<li><strong>Headers</strong></li>
+				<p>Nestes, devem conter as declarações de tipo, constantes e funções usadas no projeto, ou seja, todos os <strong>chamadores</strong> de funções e structs utilizadas no banco. Diante disso, os <i>files</i> <strong>projeto.h</strong> e <strong>tools.h</strong> serão os <i>headers</i> do programa.</p>
+                <p>Além disso, esses serão chamados nos <i>files</i> seguintes através de um <i>#define</i>. Para que sejam criados e utilizados, será preciso do seguinte corpo:</p>
+                <pre>
+             <strong>#ifndef</strong> NOMEPROJETO_H
+             <strong>#define</strong> NOMEPROJETO_H
+            
+            .
+            .
+            .
+            
+             <strong>#endif</strong>
+                </pre>
+                <p>Logo, o <i>file</i> entitulado de <strong>projeto.h</strong> será encorpado com todos os chamadores de variáveis e funções que serão usadas pelo programa. Já o <strong>tools.h</strong> será composto por chamadores de variáveis e funções universais, ou seja, aquelas que são utilizadas e funcionais para qualquer tipo de programa. Logo, não se faz necessário e seu uso, apenas caso teja alguma função específica que queira usar.</p>
+            <li><strong>Sources</strong></li>
+                <p>Os <i>files sources</i> serão aqueles que conterão um script em sí do programa, ou seja, toda a implementação do programa, seja do principal, funções, variáveis e etc, serão realizados nestes <i>files</i>. Além disso, os <i>files sources</i> deverão conter o chamador dos <i>files headers</i> em sua definição junto às bibliotecas declaradas, através do comando <strong>#include "projeto.h"</strong> e <strong>#include "tools.h"</strong>.</p>
+                <p>Diante disso, os <i>files</i> que compoem esses <i>sources</i> são: <strong>main.c</strong>, <strong>projeto.c</strong> e <strong>tools.c</strong></p>
+		</ul>
+        <p>Segue abaixo, um exemplo de um programa que realiza algumas definições de coordenadas utilizando-se de uma definição de projeeto:</p>
+        <pre>
+    ========================================================== main.c =============================================================================
+											
+    #include &lt;stdio.h>
+    #include &lt;stdlib.h>
+    #include &lt;locale.h>
+    #include "projeto.h"
+
+    //======= INTRODUÇÃO ======= //
+
+    /*Este conteúdo se baseia na definição de como acessar e manipular os dados dentro de uma lista gerada pelo usuário, de forma a realmente estruturar os dados que
+     estão sendo trabalhados no programa. Para isso, as listas trabalham de uma forma muito semelhante a vetores, onde cada lista terá caixas onde serão inseridos os 
+     dados, ou seja, imagine um vetor com capacidade de 5 dados, logo usará de um índice que percorra as 5 caixas de dados do vetor, certo? Nas listas o conceito é o 
+     mesmo, onde caixas são criadas e dados serão inseridos nelas, porém, para que precise percorrer esses dados, apenas um índice não será funcional, precisando do 
+     auxilio de um ponteiro que irá apontar para a primeira caixa da lista e para que se chegue as caixas seguintes desta lista (sucedendo ou retrocedento) será 
+     necessário mover este ponteiro afim de apontar para a posição n-1 ou n+1. Esta movimentação, é realizada pela criação de funções que fazam isso e é exatamente ai 
+     que está o conceito de estrutura de dados, ou seja, manipular dados dentro de listas que serão geradas pelo programa.
+
+     Diante disso, o programa abaixo se baseia no conceito de utilização da alocação dinâmica, com o objetivo de trabalhar dados que estão alocados na memória.
+    */
+
+    /*
+     Como já é de conhecimento, o main.c será o programa principal, e nesta aula será realizado um programa que realiza interações com coordenadas de ponteiros. Para
+     isso o programa deverá conter funções (implementadas no projeto.c) que realizem a criação do ponto, leitura, mudança dos coordenadas, diferença entre 2 pontos e 
+     liberação. 
+
+     Perceba que o ponto foi declarado como um ponteiro do tipo Ponto (struct), além de suas coordenadas a (x) e b (y). O motivo de te-lo declarado como um ponteiro, é
+     devida a sua interação com as funções de manipulação, ou seja, um valor referente as coordenadas que será apontado pela variável *ponto.
+
+     Diante disso, a variável apontada deverá receber a função de criação do ponto (inserção do mesmo como uma alocação dinâmica e inserção de valores) e em seguida,
+     atribuir esses valores e alocação as varáveis a e b.
+    */
+
+    int main() {
+        setlocale(LC_ALL,"portuguese");
+        Ponto *ponto, *ponto2;	//*p1 e *p2
+        int a,b,x,y;			//X e Y
+
+        ponto = criaPonto(10,25); //Valores para p1, onde x = 10 e y = 25
+        lerPonto(ponto, &a, &b);  //Leitura/atribuição dos valores de p1, onde a = x e b = y
+
+        ponto2 = criaPonto(20,35);	//Valores para p2, onde x = 20 e y = 35                   
+        lerPonto(ponto2,&x,&y);   	//Leitura/atribuição dos valores de p2, onde a = x e b = y
+
+        printf("\n\n PARTE 01 - COORDENADAS INICIAIS \n\n\n\n");
+        printf("\n Coordenadas do ponto1: %d, %d \n",a,b);	//Exibição das coordenadas de p1
+        printf("\n Coordenadas do ponto2: %d, %d \n",x,y);	//Exibição das coordenadas de p2
+
+        alteraPonto(ponto, &a,&b);	//Atribuição de novos valores para as coordenadas de p1 (determinados pelo usuário)
+
+        printf("\n\n PARTE 02 - NOVAS COORDENADAS \n\n\n\n");
+        printf("\n Novas coordenadas do ponto1: %d, %d \n",a,b); //Exibição das coordenadas de p1
+        printf("\n Coordenadas do ponto2: %d, %d \n",x,y);		 //Exibição das coordenadas de p2
+
+        printf("\n\n\n\n PARTE 03 - DISTANCIA COORDENADAS \n\n\n\n");
+        printf("\n\n A diferença entre as duas coordenadas acima, se dá em: %.2f \n\n",distanciaPonto(ponto,ponto2)); // Diferenã entre as coordenadas de p1 e p2
+
+        liberaPonto(ponto); 	//Liberação da memória de p1	
+        liberaPonto(ponto2);	//Liberação da memória de p1
+        return 0;
+    }
+
+
+
+
+    ========================================================== projeto.c =============================================================================
+												
+	
+    #include &lt;stdio.h>
+    #include &lt;stdlib.h>
+    #include &lt;math.h>
+    #include "projeto.h"
+
+    //======= INTRODUÇÃO ======= //
+
+    /*
+     Aqui é onde ficará a implementação das variáveis, structs e funções usadas durante o programa, neste caso:
+        1. struct ponto
+            Será a criação da struct com seus valores, nesse caso, um ponto com 2 valores de coordenadas X e Y.
+
+        2. função criaPonto
+            Irá realizar a criação do ponto e suas coordenadas, tendo como parâmetro as variáveis da struct (x e y).
+            Perceba que esta função é do tipo Ponto (struct) com o objetivo de retornar algum valor e que além disso, ela é feita como um ponteiro.
+            Para seu andamento, deverá ser criado um ponteiro (com a mesma ideia do ponto no main.c) para que sejá possível realizar uma alocação dinâmica (malloc),
+            em diante, a variável deste ponteiro irá receber uma alocação dinâmica na memória realizada pelo comando malloc do tipo Ponto (struct).
+            Feito isso, esse variável (agora alocada na memória) possui 2 outras variáveis integradas a ela (pelo fato de ela ser do tipo Ponto, possui 2 variáveis 
+            integradas x e y) e será necessário inserir valores nessas integrações (10 e 25).
+            Realizado os procedimentos, é retornado o valor de p, que é a variável do ponteiro.
+
+        3. função lerPonto
+            A leitura das coordenadas , fará com que os valores coletados, sejam inseridos nas variáveis a e b criadas no main.c.
+            Perceba que essa vriável é do tipo int, uma vez que ea retornará o valor 1 caso a função seja realizada com sucesso e o valor 0 caso não. Além disso,
+            nesta função deverá ser passado o ponteiro do ponto e das coordenadas como parâmetro, já que seu objetivo é alterar os valores das variáveis no main
+            (ou seja, quando necessária a alteração de alguma variável principal, seus ponteiros apontadores dos valores devem ser passados como parâmetros e caso
+            não seja necessária a alteração desses valores, mas somente manipulação, passa-se os valores diretamente como parâmetros).
+            Logo, por se tratar de uma alocação dinâmica, deve ser verificada a existência de memória, o que é dado por valores NULL's e diante disso, faz-se uma 
+            verificação em que caso o valor seja nulo, retorne uma mensagem de inválido (nesse caso, é retornado o valor 0).
+            Feito isso, os ponteiros, que apontam para os valores de a e b, receberão os valores de p atribuídos na função criaPonto e por fim, será retornado o valor
+            1, como identificação que a função foi realizada com sucesso.
+        4. função alteraPonto
+
+        5. função distanciaPonto
+
+        6. função liberaPonto
+    */
+
+    struct ponto{
+        int x;
+        int y;
+    };
+
+
+
+    //Criar ponto com as coordenadas
+    Ponto *criaPonto(int x, int y){
+        Ponto *p;
+        p = malloc(sizeof(Ponto));
+        p->x = x;
+        p->y = y;
+
+        return p;
+    }
+
+    //Ler as coodernadas X e Y de um ponto
+    int lerPonto(Ponto *p, int *x, int *y){
+        if(p == NULL){
+            return 0;
+        }
+        *x = p->x;
+        *y = p->y;
+
+        return 1;
+    }
+
+    //Alterar ponto
+    int alteraPonto(Ponto *p, int *x, int *y){
+        int newX, newY;
+        if(p == NULL){
+            return 0;
+        }
+        printf("\n Informe um novo valor para a coordenada do ponto1 (x/a): ");
+        scanf("%d",&newX);
+        printf("\n Informe um novo valor para a coordenada do ponto1 (y/b): ");
+        scanf("%d",&newY);
+
+        *x = newX;
+        p->x = *x;
+        *y = newY;
+        p->y = *y;
+
+        return 1;
+    }
+
+    //Distancia entre pontos
+    float distanciaPonto(Ponto *p1, Ponto *p2){
+        float dir,dirx,diry;
+        if(p1 == NULL && p2 == NULL){
+            return 0;
+        }
+
+        //dir = raiz ((a1-a2)^2 + (b1-b2)^2)
+
+        printf("\n\n P1X = %d, P1Y = %d, P2X = %d,  P2Y = %d",p1->x,p1->y,p2->x,p2->y);
+
+        dirx = p1->x - p2->x;
+        diry = p1->y - p2->y;
+        dir = sqrt((dirx*dirx) + (diry*diry));
+
+        return dir;
+    }
+
+    //Liberar ponto
+    int liberaPonto(Ponto *p){
+        free(p);
+        return 0;
+    }
+
+
+
+
+    ========================================================== projeto.h =============================================================================
+
+
+    #ifndef PROJETO_H
+    #define PROJETO_H
+
+    //======= INTRODUÇÃO ======= //
+    /*
+        Aqui é onde ficarão os chamadores das funções e variáveis declaradas no projeto.c, de forma que serão usados no programa principal (main.c)
+    */
+
+    typedef struct ponto Ponto;
+
+    //Criar ponto com as coordenadas
+    Ponto *criaPonto(int x, int y);
+
+    //Ler as coodernadas X e Y de um ponto
+    int lerPonto(Ponto *p, int *x, int *y);
+
+    //Alterar ponto
+    int alteraPonto(Ponto *p, int *x, int *y);
+
+    //Distancia entre pontos
+    float distanciaPonto(Ponto *p1, Ponto *p2);
+
+    //Liberar ponto
+    int liberaPonto(Ponto *p);
+
+    #endif
+        </pre>
+	</body>
+</html>	
+
+
+
+
+
+
+
+
+

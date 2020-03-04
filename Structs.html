@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <title>Tipos Abstratos de Dados - Estrutura de Dados</title>
+        <meta name="description" content="Este é um site referente à estudos de Estrutura de Dados">
+    </head>
+    <body>
+        <h1>Tipos Abstratos de Dados - Estrutura de Dados</h1>
+        <p>Existem situações em que os tipos de dados básicos int, float, double e char não são suficientes para representar os dados que precisamos manipular em nossos programas. Muitas vezes estes dados são <strong>Estruturas Complexas</strong> que são compostas por outros dados e muitas vezes com várias ocorrências de um dado que faz parte de outro dado.</p>
+        <p>Estruturas complexas são aquelas que podem armazenar mais de um valor, mais de um elemento de um determinado tipo de dado que pode variar dependendo do problema. Ou seja, será como um bloco que irá conter N variáveis de N tipos.</p>
+        <p>Os vetores e matrizes podem armazenar mais de um valor, mas são limitados a um único tipo de dado para seus elementos, o que limita muito seu uso para estas situações. O ideal seria termos a possibilidade de criar novos tipos de dados, os chamados <strong>tipos abstratos de dados</strong> , que possam ser definidos de acordo com o problema e que permitam o uso de mais de um tipo de dado.</p>
+        <p>A oartir dos tipos básicos da linguagem C (int, char, float e double), é possível criar novs tipos de dados compostos por membros com diferentes tipos de dados, podendo ser compostos por dados de tipo básico ou ainda por dados de outros tipos abstratos, superando assim a limitação dos vetores e matrizes.</p>
+        <p>Veja o exemplo abaixo, com um tipo <i>Aluno</i> possuindo variáveis <i>matricula, notas e média</i>:</p>
+        <pre>
+    <strong>struct</strong> <i>aluno</i>{
+        <strong>int</strong> <i>Matricula</i>
+        <strong>float</strong> <i>Nota[3], Media</i>;
+    };
+    
+    Perceba que essa é a definição de criação de uma estrutura de dados, dando um comando <strong>struct</strong> seguido pelo nome da estrutura. Após isso, basta inserir as vaiáveis que irão compor 
+    esta estrutura e seus tipos.
+    
+    Após a criação, deve ser feita a declaração da estrutura dentro do <strong>main</strong> como no exemplo a seguir (Além das atribuições de valores):
+    
+    <strong>int main(){</strong>
+        <strong>struct</strong> <i>aluno Aluno1</i>
+        
+        <i>Aluno1.Matricula</i>=<i>18101381;
+        Aluno1.Nota[0]</i>=<i>7,5;
+        Aluno1.Nota[1]</i>=<i>5,2;
+        Aluno1.Nota[2]</i>=<i>8,4;
+        Aluno.Media</i>=(<i>Aluno1.Nota[0] + Aluno1.Nota[1] + Aluno1.Nota[2]</i>)/<i>3</i>;
+        
+        <strong>printf</strong>(" Matricula: %d",Aluno1.Matricula);
+        <strong>printf</strong>("\n Média: %.2f",Aluno1.Media);
+        
+        <strong>return</strong> 0;
+    }
+    
+    Peceba que é feito a declararação a variável <i>Aluno1</i> do tipo <strong>struct aluno</strong>, e para que sejam acessados os valores da struct, é passado o nome da variável <i>Aluno1</i> seguido por um 
+    <strong>ponto</strong> e o nome do valor da struct.
+    
+    Assim como, também é possível inserir em uma variável do tipo struct o valor de outra variável do mesmo tipo, por exemplo:
+    
+    <strong>struct</strong> <i>aluno Aluno1, Aluno2;</i>
+    <i>Aluno2 = Aluno1;</i>
+        </pre>
+        <ul>
+            <li><strong>Estruturas Aninhadas</strong></li>
+                <p>Estruturas podem ser definidas a partir de outras estruturas já definidas anteriormente. Desta forma, podemos ter estruturas aninhadas, o que é uma forma de definição de tipos abstartatos que promove o reuso e facilita a manutenção dos programas. Podemos definir uma estrutura contendo informações usadas em várias partes do programa em um único ponto e utilizar esta estrutura na definição de outras estruturas que precisam das mesmas informações. Resumindo, é possível inserir em uma struct os dados de uma outra struct, como no exemplo a seguir:</p>
+                <pre>
+            <strong>typedef struct</strong>{
+                <strong>int</strong> <i>dia, ano;</i>
+                <strong>char</strong> <i>mes[10]</i>;
+                
+            }<i>data</i>;
+            
+            <strong>typedef struct</strong>{
+                <strong>int</strong> <i>codigo;</i>
+                <strong>float</strong><i>preco;</i>
+                <strong>Data</strong> <i>DataVenda;</i>
+            }<i>venda</i>;
+            
+            Dessa forma, todos os dados da struct <i>Data</i> (Dia,mes,ano) serão armazenados na struct <strong>Venda</strong>. Para que os dados sejam armazenados, o procedimento é muito semelhante aos mostrados anteriormente:
+            
+            <strong>int main(){</strong>
+        <strong>struct</strong> <i>venda Venda</i>
+        
+        Venda.DataVenda.dia = 25;
+        Venda.DataVenda.mes = 05
+        Venda.DataVenda.ano = 1999;
+        
+        <strong>return</strong> 0;
+    }
+                </pre>
+            <li><strong>Funções que retornam structs</strong></li>
+                <p>Podemos escrever funções que retornam structs, sendo uma forma de fazer com que uma função retorne mais de um valor, pois uma estrutura pode conter mais de um campo e até mesmo campos definidos como vetores e matrizes. As funções também podem receber parâmetros que sejam do tipos struct. Veja abaixo um exemplo de função que retorna uma struct:</p>
+                <pre>
+            <strong>OBS: Lembre-se que nestes casos, a struct deve sempre vir <strong>antes do chamador da função.</strong></strong>
+            
+            <strong>Venda</strong> <i>TotalVendas</i>(Venda A, Venda B){
+                <strong>Venda</strong> <i>total</i>;
+                total.pecas = A.pecas + B.pecas;
+                total.preco = A.preco + B.preco;
+                
+                <strong>return</strong> total
+            }
+                </pre>
+            <li><strong>Vetores de Structs</strong></li>
+                <p>É possível também, declarar matrizes e vetores usando structs, desde que tenham sido definidas no programa. O exemplo abaixo ilusra um programa que faz uso de um vetor cujos elementos são do tipo struct:</p>
+                <pre>
+            <strong>typedef struct</strong>{
+                <strong>int</strong> dia, ano;
+                <strong>char</strong> mes[10];
+            }Data;
+            
+            <strong>int main()</strong>{
+                <strong>Data</strong> data[5];
+                <strong>int</strong> i,n;
+                
+                for(i=0;i menor 5; i++){
+                    <strong>printf</strong>("Informe o valor do dia: ");
+                    <strong>scanf</strong>("%d",&data[i].dia);
+                    
+                    <strong>printf</strong>("Informe o valor do mes: ");
+                    <strong>scanf</strong>("%d",&data[i].mes);
+                    
+                    <strong>printf</strong>("Informe o valor do ano: ");
+                    <strong>scanf</strong>("%d",&data[i].ano);
+                }
+            }
+                </pre>
+        </ul>
+    </body>
+</html>
