@@ -40,75 +40,114 @@
                 <p>Como dito anteriormente, um bloco da lista deverá conter 1 elemento e no mínimo 1 ponteiro apontador:</p>
                 <pre>
             <strong>struct</strong> no{
-                <strong>int</strong> elemento;
-                <strong>struct</strong> no *prox;
+                <strong>int</strong> elemento;  //Valor que o elemento terá
+                <strong>struct</strong> no *prox;  //Apontador para a posição X+1
             };
-            <strong>typedef struct</strong> no lista;
+            <strong>typedef struct</strong> no Elem;  //Definição da struct como um tipo abstrato
                 </pre>
+                <p>Perceba que sua implementação é muito simples, pois este será o corpo dos elementos da lista. Porém, saiba que após isso, em seu programa, deverá ser criada a lista como ponteiro desta struct. Isso se dá pelo comando: <strong>Elem</strong> *<i>lista</i>. Este ponteiro criado será exatamente o que será referênciado nas funções de manipulação da lista.</p>
             <strong><li>Criação da lista</li></strong>
                 <p>Este passo fará a criação da lista, que consiste basicamente em setá-la com um valor <i>NULL</i> inicial:</p>
                 <pre>
-            lista *cria(<strong>void</strong>){
-                <strong>return</strong> NULL;
+            Elem *criarLista(<strong>void</strong>){
+
+                <strong>return</strong> NULL;  //Retorno NULL para algo vazio
             }
                 </pre>
-            <strong><li>Inserção de elemento</li></strong>
-                <p>Uma vez criada a lista, será possível inserir elementos à ela, onde para cada elemento inserido, deve ser realizada uma alocação dinâmica na memória e encadeá-lo na lista. Deve-se notar que o ponteiro que representa a lista deve ter seu valor atualizado, pois a lista deve passar a ser representada pelo ponteiro apontador para o novo primeiro elemento, ou seja, um ponteiro que apontará para o primeiro valor da lista. Por essa razão, a função recebe como parâmetros a própria lista (struct) como ponteiro e o leitor do novo elemento:</p>
+                <p>Algo bem simplório, pois de um forma geral, fará com que o primeiro elemento da lista seja criado, mesmo que não contenha valor algum. Para isso, basta retornar da função o <i>NULL</i>. Perceba que esta função é criada como ponteiro do tipo <i>Elem</i> (struct), ou seja, ela faz referência ao exato ponteiro <i>*lista</i> criado.</p>
+            <strong><li>Verificação de lista vazia</li></strong>
+                <p>Esta função irá verificar se uma lista se encontra ou não vazia (sem elemento algum armazenado). Pode parecer seu uso desnecessário, porém em alguns momentos esta função se mostrará eficiente para algumas implementações como a de exibição da lista. Imagine que com esta função, recursos poderão ser minimizados durante a execução do programa, por exemplo na exibição da lista, a função não precisará executar todo o código caso a lista não tenha elementos certo? Abaixo segue sua implementação:</p>
                 <pre>
-            lista *insere(lista *l, int i){
-                //Alocação dinãmica do valor
-                lista *novo;
-                *novo = (lista *)<strong>malloc</strong>(<strong>sizeof</strong>(lista));
-                //inserção do valor
-                novo->valor = i;
-                //apontador para o próximo elemento
-                novo->prox = l;
-                <strong>return</strong> novo;
+            <strong>int</strong> listaVazia(Elem *lista){
+            
+                <strong>return</strong> (lista == NULL);  //Verificação se a lista está nula
+                
             }
                 </pre>
+                <p>Basicamente, esta função deverá verificar se a lista é igual a NULL, ou seja, se a lista permanece da mesma forma ue foi criada (sem alteração ou implementação de elemento), procedimento este realizado na função anterior.</p>
+            <strong><li>Inserção de elemento</li></strong>
+                <p>Uma vez criada a lista, será possível inserir elementos à ela, onde para cada elemento inserido, deve ser realizada uma alocação dinâmica na memória e encadeá-lo na lista. Deve-se notar que esta função passa como parâmetros um ponteiro para ponteiro <i>lista</i> e isso é dado pelo fato de não desejar que a lista seja manipulada de forma direta, mas sim referênciada durante a manipulação. Além disso, deve ser passado como parâmetro o valor que se deseja inserir no elemento. Segue um exemplo:</p>
+                <pre>
+           <strong>int</strong> inserirInicio(Elem **lista, <strong>int</strong> valor){
+           
+                Elem *no;  //Ponteiro que será tido como o elemento
+                no = (Elem *)<strong>malloc</strong>(<strong>sizeof</strong>(Elem));  //Alocação dinâmica do elemento
+                no->num = valor;  //Adição do valor ao elemento
+                no->prox = *lista;  //Adição do valor NULL ao prox (pois a lista é NULL - função criarLista)  
+                (*lista) = no;
+
+                <strong>return</strong> no;
+            }
+                </pre>
+                <p>Nesta função, deverá ser criado um ponteiro que fará a alocação dinâmica (este ponteiro é o referênciador do elemento da lista), onde logo em seguida, receberá um valor e o <i>prox</i> (perceba que o <i>prox</i> recebe o ponteiro da lista, isto por que cada último apontador de um elemento, deverá ser NULL) e por fim fazer com que o no (elemento) seja inserido na lista e retorna-lo.</p>
+                <p>Outra possibilidade de implementação desta função, é a capacidade de fazer com que o usuário insira um elemento no final da lista, o qual segue os mesmos conceitos da função acima com 1 particularidade, onde deverá ter um auxiliador para percorrer toda a lista afim de alcançar a última posição (a que aponta para NULL). Abaixo segue a implementação desta função:</p>
+                <pre>
+            <strong>int</strong> inserirFim(Elem **lista, <strong>int</strong> valor){
+            
+                <strong>if</strong>(listaVazia(lista)){  //Verificação da lista vazia - Função listaVazia
+                    inserirInicio(lista,valor);  //Caso esteja vazia, logicamente a única posição é a de inicio
+                }<strong>else</strong>{
+                    Elem *no;  //Ponteiro que será tido como o elemento
+                    no = (Elem *)<strong>malloc</strong>(<strong>sizeof</strong>(Elem));  //Alocação dinâmica do elemento
+                    no->num = valor;  //Adição do valor ao elemento
+                    Elem *aux;  //Percorredor da lista
+                    aux = *lista;  //Atribuição da própria lista ao percorredor
+                    <strong>while</strong>(aux->prox != NULL){  //Loop - parada quando alcançar prox = NULL (último prox da lista)
+                        aux = aux->prox;  //Andamento do percorredor de posição a posição
+                    }
+                    aux->prox = no;  //Ao chegar na última posição, inserção do elemento
+                }
+
+                <strong>return</strong> 0;
+            }
+                </pre>
+                <p>Aqui o procedimento é muito semelhante ao de inserção de elemento no inicio, porém, um percorredor deverá ser criado, que terá o objetivo de pular de posição em posição até alcançar a última (que terá o prox = null) que será realizado por um <i>looping</i> (while). Ao se alcançar a última posição, o percorredor se encontrará como um elemento, portanto o seu <i>prox</i> deverá agora apontador para o novo elemento definido (no).</p>
             <strong><li>Exibição da lista</li></strong>
                 <p>Esta função se torna bem simples, onde basicamente será gerado um <i>loop</i> que percorrerá todos os valores da lista e exibi-los:</p>
                 <pre>
-            lista *exibir(lista *l){
-                //Verificação de lista vazia
-                <strong>if</strong>(l == NULL){
-                    <strong>printf</strong>("\nTentou imprimir uma lista vazia");
-                    <strong>return</strong> 1
+            <strong>int</strong> imprimirLista(Elem *lista){
+            
+                <strong>if</strong>(listaVazia(lista)){  //Verificação de lista vazia
+                    <strong>printf</strong>("\n LISTA VAZIA \n");
                 }<strong>else</strong>{
-                    //variável que percorrerá
-                    lista *aux;
-                    aux = lista->prox;
-                    <strong>printf</strong>("\n LISTA:  ");
-                    <strong>while</strong>(aux != NULL){
-                        <strong>printf</strong>("%d",aux->elemento);
-                        aux = aux->prox;
-                    }
+                    Elem *aux;  //Percorredor da lista
+                    aux = lista;  //Atribuição da própria lista ao percorredor
+                    <strong>printf</strong>("\n LISTA:	");
+                    <strong>while</strong>(aux != NULL){  //Loop - parada quando alcançar prox = NULL (último prox da lista)
+                        <strong>printf</strong>(" - %d",aux->num);  //Exibição do elemento
+                        aux = aux->prox;  //Andamento do percorredor de posição a posição
+                    }	
+                    <strong>printf</strong>(" - ");	
                 }
+                <strong>return</strong> 0;
             }
                 </pre>
+                <p>Função esta que possui uma implementação simples, pois basta criar um percorredor que pulará sobre todas as posições da lista e exibir estas posições.</p>
             <strong><li>Excluir elemento</li></strong>
                 <p>Esta é considerada a função mais complexa do programa, pois ao retirar um elemento, toda a lista deve ser restruturada novamente para posicionar o bloco vazio. Tem como parâmetros de entrada a lista e o valor do elemento que será retirado.</p>
                 <p>A complexidade se dá exatamente pelo fato da restruturação da lista, pois caso o primeiro elemento seja removido, o segundo deve assumir seu lugar. Assim como se o último ou do meio for removido, seu antecessor deverá assumir a nova posição. Diante disso, o primeiro a ser feito, é localizar em que posição o elemento se encontra:</p>
                 <pre>
-            lista *remove(lista *l, int valor){
-                //ponteiro para armazenar valor que ocupará o novo espaço
-                lista *ant = NULL;
-                //ponteiro para percorrer a lista
-                lista *aux = l;
-                <strong>if</strong>(l != NULL){
-                    //Procurar elemento na lista
-                    <strong>while</strong>(aux != NULL && aux->elemento != valor){
-                        ant = aux;
-                        aux = aux->prox;
-                    }
-                    //Se aux for null, o valor não se encontra
-                    <strong>if</strong>(aux == NULL){
-                        <strong>return</strong> l;
-                    }
-                    //
-                }
-            }
+            
                 </pre>
+            <strong><li>Liberar lista</li></strong>
+                <p>Por fim, a última função que deverá ser implementada é a de liberação da lista, a qual terá o objetivo de ao fim do programa, encerrar a lista e desalocar da memória tudos os elementos que foram alocados. Isto é importante, uma vez que se este procedimento não for realizado, algum lixo pode ficar armazenado na memória, trazendo possíveis problemas nos recursos e processamento da máquina. Para isso, é feito:</p>
+                <pre>
+            <strong>int</strong> liberarLista(Elem **lista){
+            
+                <strong>if</strong>(listaVazia(lista)){  //Verificação de lista vazia
+                    <strong>free</strong>(lista);  //Caso a lista esteja vazia, basta liberá-la
+                }<strong>else</strong>{
+                    Elem *aux, *aux2;  //Auxiliares que irá percorrer a lista
+                    aux = *lista;  //Atribuição da própria lista ao percorredor
+                    <strong>while</strong>(aux != NULL){  //Loop - parada quando alcançar prox = NULL (último prox da lista)
+                        aux2 = aux->prox;  //O auxiliar 2 irá receber o valor do próximo elemento
+                        <strong>free</strong>(aux);  //Liberação do elemento
+                        aux = aux2;  //Percorredor receberá o próximo elemento para futuramente liberá-lo.
+                    }
+                }
+            } 
+                </pre>
+                <p>De forma geral, bastará percorrer toda a lista e sair liberando cada posição dela e para isso, 2 auxiliares deverão ser criados, onde <i>aux</i> será o percorredor e <i>aux2</i> receberá o valor de <i>prox</i> (o elemento a posição seguinte). Pense que ao excluir uma posição, como saberá qual a próxima se o seu <i>prox</i> também foi excluido? Por isso o uso do <i>aux2</i>. Diante disso, basta excluir o elemento (aux) e fazer com que após isso, ele receba o próximo elemento (armazenado em aux2).</p>
         </ol>
     </body>
 </html>
