@@ -1,1 +1,144 @@
+<!DOCTYPE html>
 
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <title>Menu Estrutura de Dados</title>
+        <meta name="description" content="Este é um site referente à estudos de Estrutura de Dados">
+    </head>
+    <body>
+		<h1>LISTA ENCADEADA COMPLETA</h1>
+		<pre>
+		#include <stdio.h>
+		#include <stdlib.h>
+		#include <locale.h>
+		#include "projeto.h"
+
+		/* STRUCTS */
+		struct elemento{
+			int valor;
+			struct elemento *prox;
+		};
+
+		/* FUNÇÕES */
+		//Cria Lista
+		Elem *cria(void){
+			return NULL;
+		}
+
+		//Verificação de lista vazia
+		int vazia(Elem *lista){
+			return (lista == NULL);
+		}
+
+		//Insere Inicio
+		int insereInicio(Elem **lista, int x){
+			Elem *no;
+			no = (Elem *)malloc(sizeof(Elem));
+			no->valor = x;
+			no->prox = *lista;
+			(*lista) = no;
+			
+			return no;
+		}
+
+		//Insere Final
+		int insereFinal(Elem **lista, int x){
+			if(vazia(*lista)){
+				insereInicio(lista,x);
+
+			}else{
+				Elem *no;
+				no = (Elem *)malloc(sizeof(Elem));
+				no->valor = x;
+				Elem *aux;
+				aux = *lista;
+				while(aux->prox != NULL){
+					aux = aux->prox;
+				}
+				no->prox = NULL;
+				aux->prox = no;
+			}
+			
+			return 0;
+		}
+
+
+		//Remover Elemento Inicio (Remoção do elemento por posição, é dada uma posição X e o elemento desta posição será removido)
+		int excluiInicio(Elem **lista, int x){
+			if(vazia(*lista)){
+				printf("\n LISTA VAZIA \n");
+			}else{
+				Elem *aux;
+				aux = *lista;
+				(*lista) = aux->prox;
+				free(aux);
+			}
+		}
+
+
+		//Remover Elemento Final (Remoção do elemento por posição, é dada uma posição X e o elemento desta posição será removido)
+		int excluiFinal(Elem **lista, int x){
+			if(vazia(*lista)){
+				printf("\n LISTA VAZIA \n");
+			}else{
+				Elem *aux, *aux2;
+				aux = *lista;
+				while(aux->prox->prox != NULL){
+					aux2 = aux;
+					aux = aux->prox;
+				}
+				aux2->prox = NULL;
+				free(aux);
+				
+			}
+		}
+
+		//Exibição da lista
+		int exibe(Elem *lista){
+			if(vazia(lista)){
+				printf("\n LISTA VAZIA \n");
+			}else{
+				Elem *aux;
+				printf("\n LISTA:	");
+				while(aux != NULL){
+					printf(" - %d",aux->valor);
+					aux = aux->prox;
+				}
+				printf(" - \n");
+			}
+			
+			return 0;
+		}
+
+		//Liberação da lista
+		int libera(Elem **lista){
+			if(vazia(*lista)){
+				free(*lista);
+			}else{
+				Elem *aux,*aux2;
+				aux = *lista;
+				while(aux != NULL){
+					aux2 = aux->prox;
+					free(aux);
+					aux = aux2;
+				}
+			}
+			
+			return 0;
+		}
+
+
+		</pre>
+		<hr>
+		<h2>LISTA ORDENADA</h2>
+		<p>Deve haver uma verificação do valor a ser insrido com os elementos da lista, ou seja, caso o novo valor (x) seja menor que o primeiro elemento (*lista), é chamada a função de inserção no início. Caso não, deve ser comparado com o próximo elemento (*lista->prox) e ver a comparação novamente</p>
+		<p>Ou seja, o novo elemento a ser inserido, deverá ser verificado de 3 formas:</p>
+		<ol>
+			<li>Se a lista for vazia, então insereInicio</li>
+			<li>Se a lista tiver apenas 1 elemento, compara o novo com esse elemento (se x > *lista = insereFinal) ou (se x < *lista = insereInicio)<li>
+			<li>Se a lista tiver mais de 1 elemento, deverá percorrer a lista, comparando o novo com todos os elementos da lista (se x > aux->prox->value = insere)
+		    <p>while(aux->prox != NULL && x > aux->prox->num)</p>
+    </ol>
+	</body>
+<html>
