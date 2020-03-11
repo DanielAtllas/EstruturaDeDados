@@ -139,6 +139,14 @@
 			<li>Se a lista tiver apenas 1 elemento, compara o novo com esse elemento (se x > *lista = insereFinal) ou (se x < *lista = insereInicio)<li>
 			<li>Se a lista tiver mais de 1 elemento, deverá percorrer a lista, comparando o novo com todos os elementos da lista (se x > aux->prox->value = insere)
 		    <p>while(aux->prox != NULL && x > aux->prox->num)</p>
+		    
+		    <p>Idea de remoção encadeada</p>
+		    <pre>
+		   if(x == aux2->num){
+		   	aux->prox = aux2->prox;
+			free(aux2);
+		   }
+		    </pre>
     </ol>
 	</body>
 <html>
