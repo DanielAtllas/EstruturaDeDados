@@ -40,7 +40,7 @@
                 <p>Como dito anteriormente, um bloco da lista deverá conter 1 elemento e no mínimo 1 ponteiro apontador:</p>
                 <pre>
             <strong>struct</strong> no{
-                <strong>int</strong> elemento;  //Valor que o elemento terá
+                <strong>int</strong> valor;  //Valor que o elemento terá
                 <strong>struct</strong> no *prox;  //Apontador para a posição X+1
             };
             <strong>typedef struct</strong> no Elem;  //Definição da struct como um tipo abstrato
@@ -125,10 +125,78 @@
                 <p>Função esta que possui uma implementação simples, pois basta criar um percorredor que pulará sobre todas as posições da lista e exibir estas posições.</p>
             <strong><li>Excluir elemento</li></strong>
                 <p>Esta é considerada a função mais complexa do programa, pois ao retirar um elemento, toda a lista deve ser restruturada novamente para posicionar o bloco vazio. Tem como parâmetros de entrada a lista e o valor do elemento que será retirado.</p>
-                <p>A complexidade se dá exatamente pelo fato da restruturação da lista, pois caso o primeiro elemento seja removido, o segundo deve assumir seu lugar. Assim como se o último ou do meio for removido, seu antecessor deverá assumir a nova posição. Diante disso, o primeiro a ser feito, é localizar em que posição o elemento se encontra:</p>
+                <p>Esta função poderá conter 3 formas, onde há a possibilidade de remover um elemento do <strong>inicio</strong>, do <strong>final</strong> ou até mesmo de uma <strong>posição desejada/elemento desejado</strong>. Em tese, o seu procedimento é muito semelhante às funções de inserção no final e exibição da lista, em que deverão ser criados um percorredor da lista e um auxiliar (Como na função de liberação). Segue um exemplo de cada uma das formas:</p>
                 <pre>
+            <strong>====== REMOVER INICIO ======</strong>
+
+            <strong>int</strong> removeInicio(Elem **lista){
+                <strong>if</strong>(vazia(*lista)){  //Verificação de lista vazia
+                    <strong>printf</strong>("\n LISTA VAZIA \n");
+                }<strong>else</strong>{
+                    Elem *aux;  //Percorredor
+                    aux = *lista;  //Percorredor deve receber a própria lista
+                    (*lista) = aux->prox;  //Lista agora apontará para NULL (aux->prox)
+                    <strong>free</strong>(aux);  //Remoção do elemento
+                }
+                <strong>return</strong> 0;
+            }
+
+            <strong>====== REMOVER FINAL ======</strong>
+            
+            <strong>int</strong> removeFinal(Elem **lista){
+                <strong>if</strong>(vazia(*lista)){  //Verificação de lista vazia
+                    <strong>printf</strong>("\n LISTA VAZIA \n");
+                }<strong>else</strong>{
+                    Elem *aux, *aux2;  //Percorredor e auxiliar
+                    aux = *lista;  //Percorredor recebe a própria lista
+                    <strong>while</strong>(aux->prox->prox != NULL){  //percorrimento com condição de parada se a posição x+2 for NULL (aux = posição x / aux->prox = posição x+1 / aux->prox->prox = posição x+2)
+                        aux2 = aux;  //auxiliar recebe o atual elemento
+                        aux = aux->prox;  //percorredor pulará de posição em posição
+                    }
+                    aux2->prox = NULL;  //elemento anterior recebe NULL (se tornando o novo último elemento)
+                    <strong>free</strong>(aux);  //Exclusão do último elemento
+
+                }
+                <strong>return</strong> 0;
+            }
+
+            <strong>====== REMOVER POS. DESEJADA ======</strong>
+            
+            <strong>int</strong> exclui(Contato **lista){
+                <strong>if</strong>(vazia(lista)){  //Verificação de lista vazia
+                    printf("\n LISTA VAZIA \n");
+                }<strong>else</strong>{
+                    <strong>int</strong> posicao, cont=1;  //Posição que será removida e contador para alcança-la
+                    <strong>printf</strong>("\n Informe a posição do elemento que deseja remover: ");
+                    <strong>scanf</strong>("%d",&posicao);  //Posição do elemento que será removido
+
+                    Contato *aux, *aux2;  //Percorredor e auxiliar
+                    aux = *lista;  //Percorredor recebe a própria lista
+                    <strong>while</strong>(aux !=NULL && cont != posicao){  //Percorrimento, condição de parada se o "aux" for NULL (último elemento) ou posição alcançada
+                        aux2 = aux;  //Auxiliar recebe a elemento atual (funcionará caso o próximo deva ser eliminado)
+                        aux = aux->prox;  //Percorredor recebe o próximo elemento (pular de elemento em elemento)
+                        cont++;  //Contador seguinte
+                    }
+                    <strong>if</strong>(aux == NULL){  //Se elemento for nulo, é pq o a posição não existe
+                        <strong>return</strong> *lista;  //Retorno da lista sem alteração
+                    }
+                    <strong>if</strong>(aux2 == NULL){  //Se o anterior for nulo, é pq o elemento a ser excluido está na primeira posição
+                        *lista = aux->prox;  //Retorno da lista como NULL
+                    }<strong>else</strong>{
+                        aux2->prox = aux->prox;  //Se o o anterior não for nulo, é pq o a posição atual deverá ser excluida, fazendo com que o próximo elemento receba a nova
+                                                 //posição
+                    }
+                    <strong>free</strong>(aux);  //Liberação do elemento
+                    <strong>return</strong> *lista;  //Retorno da ltsa;
+                }
+
+                <strong>return</strong> 0;
+            }
+
+            
             
                 </pre>
+            <p>De forma geral, esse auxiliar (<i>aux2</i>) servirá para receber o elemento anterior ao elemento que será excluído, fazendo assim com que ele seja o novo último elemento na situação da função <strong>removerFinal</strong>. Já na função <strong>removeN</strong> o conceito é o mesmo, pois ao alcançar o elemento a ser removido, alguém deve ser colocado nesta posição vazia (que será o elemento anterior, da posição antecessora). Perceba também o uso do <i>aux->prox->prox</i>, isto faz com que o elemento da posição X+2 seja selecionado, assim como o valor daquele elemento também poderia ser alcançado com <i>aux->prox->valor</i>.</p>
             <strong><li>Liberar lista</li></strong>
                 <p>Por fim, a última função que deverá ser implementada é a de liberação da lista, a qual terá o objetivo de ao fim do programa, encerrar a lista e desalocar da memória tudos os elementos que foram alocados. Isto é importante, uma vez que se este procedimento não for realizado, algum lixo pode ficar armazenado na memória, trazendo possíveis problemas nos recursos e processamento da máquina. Para isso, é feito:</p>
                 <pre>
