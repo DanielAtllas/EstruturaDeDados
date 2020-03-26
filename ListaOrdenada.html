@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <title>Lista Ordenada -  Estrutura de Dados</title>
+        <meta name="description" content="Este é um site referente à estudos de Estrutura de Dados">
+    </head>
+    <body>
+        <h1>Lista Ordenada - Estrutura de Dados</h1>
+        <p>As listas ordenadas, são uma abrevação das listas simplesmente encadeadas, onde seguem e exato mesmo conceito de vários elementos que possuem valores e ponteiros apontadores para o elemento seguinte. A única diferenã neste tipo de lista, é que ao serem inseridos novos elementos, esses devem ser comparados com os valores dos elementos já presentes na lista e inseridos levando em consideração se são menores ou maiores, ou seja, a cada novo elemento inserido, sua posição não será apenas no inicio ou no fim, mas sim, dependendo de seu valor, ordenando a lista.</p>
+        <p>No momento da remoção de elementos, o conceito segue o mesmo, onde o elemento anterior ou seguinte deve substituir a posição do elemento removido. Diante disso, a grande questão está na função de inserção de elementos. Porém, para que seja feito um entendimento completo do funcionamento da lista ordenada, todas as suas funções serão passadas nesse artigo. Portanto, como na lista encadeada, eis os passos de criação da lista:</p>
+        <ol>
+            <strong><li>Criação da struct</li></strong>
+                <p>Como dito anteriormente, um bloco da lista deverá conter 1 elemento e no mínimo 1 ponteiro apontador:</p>
+                <pre>
+            <strong>struct</strong> elemento{
+                <strong>int</strong> valor;  //Valor que o elemento terá
+                <strong>struct</strong> elemento *prox;  //Apontador para a posição X+1
+            };
+            <strong>typedef struct</strong> elemento Elem;  //Definição da struct como um tipo abstrato
+                </pre>
+                <p>Perceba que sua implementação é muito simples, pois este será o corpo dos elementos da lista. Porém, saiba que após isso, em seu programa, deverá ser criada a lista como ponteiro desta struct. Isso se dá pelo comando: <strong>Elem</strong> *<i>lista</i>. Este ponteiro criado será exatamente o que será referênciado nas funções de manipulação da lista.</p>
+            <strong><li>Criação da lista</li></strong>
+                <p>Este passo fará a criação da lista, que consiste basicamente em setá-la com um valor <i>NULL</i> inicial:</p>
+                <pre>
+            Elem *criarLista(<strong>void</strong>){
+
+                <strong>return</strong> NULL;  //Retorno NULL para algo vazio
+            }
+                </pre>
+                <p>Algo bem simplório, pois de um forma geral, fará com que o primeiro elemento da lista seja criado, mesmo que não contenha valor algum. Para isso, basta retornar da função o <i>NULL</i>. Perceba que esta função é criada como ponteiro do tipo <i>Elem</i> (struct), ou seja, ela faz referência ao exato ponteiro <i>*lista</i> criado.</p>
+            <strong><li>Verificação de lista vazia</li></strong>
+                <p>Esta função irá verificar se uma lista se encontra ou não vazia (sem elemento algum armazenado). Pode parecer seu uso desnecessário, porém em alguns momentos esta função se mostrará eficiente para algumas implementações como a de exibição da lista. Imagine que com esta função, recursos poderão ser minimizados durante a execução do programa, por exemplo na exibição da lista, a função não precisará executar todo o código caso a lista não tenha elementos certo? Abaixo segue sua implementação:</p>
+                <pre>
+            <strong>int</strong> listaVazia(Elem *lista){
+            
+                <strong>return</strong> (lista == NULL);  //Verificação se a lista está nula
+                
+            }
+                </pre>
+                <p>Basicamente, esta função deverá verificar se a lista é igual a NULL, ou seja, se a lista permanece da mesma forma ue foi criada (sem alteração ou implementação de elemento), procedimento este realizado na função anterior.</p>
+            <strong><li>Inserção de elemento</li></strong>
+                <p>Aqui é onde começa a principal diferença da lista ordenada, pois para que seja inserido um elemento, devem haver <strong>verificações</strong> em meio a lista para em qual posição o elemento será inserido. Diante disso, podem acontecer 3 situações de inserção, onde:</p>
+                <ul>
+                    <li><strong>Lista Vazia</strong> - A primeira situação a ser encontrada é no momento em que a lista não possui elemento algum, dessa forma, basta fazer uma inserção normal, onde o ponteiro lista irá apontar para o elemento criado e seu apontador apontará para "<i>*lista</i>" (NULL).</li>
+                    <br>
+                    <li><strong>Valor menor que o primeiro elemento</strong> - Neste caso, há a possibilidade de que o novo elemento tenha um valor menor do que o de o primeiro elemento (apontado por *lista). Logo, o novo elemento deverá assumir a primeira posição e o "<i>old</i>" deverá avançar, ou seja, o novo elemento que será apontado pela lista e o "<i>old</i>" será o "<i>prox</i>" do novo.</li>
+                    <br>
+                    <li><strong>Valor maior que o primeiro elemento</strong> - Neste caso, o novo elemento possui o valor maior que o do primeiro elemento, portanto, será inserido em meio a lista. Logo, deverá usar de um percorredor da lista até que encontre um elemento maior ou a última posição e aloca-lo.</li>
+                </ul>
+                <p>Portanto, 3 verificações devem ser realizadas. Porém, a 1ª e 2ª possuem um mesmo contexto se inserção no início da lista, bastanto então, uma inserção de elemento simples:</p>
+                <pre>
+            <strong>int</strong> insereOrdenada(Elem **lista, <strong>int</strong> x){
+                /*1º Caso, Lista vazia ou 2º Caso, Elemento menor que o primeiro*/
+                <strong>if</strong>(vazia(*lista) || x &lt; (*lista)->valor){
+                
+                    Elem *novo;
+                    novo = (Elem *)<strong>malloc</strong>(<strong>sizeof</strong>(Elem));
+                    novo->valor = x;
+                    novo->prox = *lista;
+                    (*lista) = novo;
+                    
+                    <strong>return</strong> 1;
+                }
+                /*3º Caso, Elemento maior que o primeiro*/
+                Elem *novo, *aux, *aux2;
+                aux = *lista;
+                aux2 = aux->prox;
+                <strong>while</strong>(aux2->prox != NULL && valor > aux2->valor){
+                
+                    aux = aux2;
+                    aux2 = aux2->prox;
+                }
+                 novo = (Elem *)<strong>malloc</strong>(<strong>sizeof</strong>(Elem));
+                 novo->valor = x;
+                 aux->prox = novo;
+                 novo->prox = aux2;
+                 
+                 <strong>return</strong> 1;
+                
+            }
+                </pre>
+                <p>Como dito, basta ser criado um percorredor da lista e seu auxiliar, até que alcancem a última posição (onde não existe elemento com valor maior) ou achar sua posição (onde foi achado um elemento com valor maior). Achada a posição, basta fazer com que esse elemento seja o <i>prox</i> do percorredor e o <i>prox</i> do novo, o auxiliar.</p>
+            <strong><li>Remoção de elemento</li></strong>
+                <p>Assim como na inserção de elemento, a remoção se faz um pouco maior que o de listas encadeadas, onde 3 situações também são encontradas. Mas de forma geral, o conceito segue o mesmo, onde um elemento ao ser removido, outro deverá assumir sua posição. Portanto, faz-se necessário o percorrimento da lista com o percorredor e auxiliar. As 3 situações são:</p>
+                <ul>
+                    <li><strong>Lista vazia</strong> - Caso em que a lista não possui valor algum, então basta não fazer execução alguma.</li>
+                    <br>
+                    <li><strong>Remover primeiro elemento</strong> - Aqui é o caso em que o elemento a ser removido, é o primeiro, onde a lista deverá apontar para o segundo elemento (*lista->prox), tornando-o o novo primeiro elemento.</li>
+                    <br>
+                    <li><strong>Remover a partir do primeiro elemento</strong> - Neste caso, o elemento a ser removido se encontra em meio a lista, precisando percorrer a lista para achar o elemento e removendo-o caso o elemento seja encontrado, se não, nenhuma execução é feita.</li>
+                </ul>
+                <p>Segue então a função para remoção de elemento da lista ordenada:</p>
+                <pre>
+            <strong>int</strong> removerOrdenada(Elem **lista, <strong>int</strong> x){
+            
+                /*1º Caso, lista vazia*/
+                <strong>if</strong>(vazia(*lista)){
+                
+                    <strong>return</strong> 0;
+                }
+                /*2º Caso, remover primeiro elemento*/
+                <strong>if</strong>(x == (*lista)->num){
+                
+                    Elem *aux;
+                    aux = *lista;
+                    (*lista) = aux->prox;
+                    <strong>free</strong>(aux);
+                }
+                /*3º Caso, remoção durante a lista*/
+                Elem *aux, *aux2;
+                aux = *lista;
+                aux2 = aux->prox;
+                <strong>while</strong>(aux2 != NULL && x > aux2->valor){
+                
+                    aux = aux2;
+                    aux2 = aux2->prox;
+                }
+                <strong>if</strong>(x != NULL && x == aux->valor){
+                
+                    aux = aux2->prox;
+                    free(aux2);
+                    
+                    <strong>return</strong> 1;
+                }<strong>else</strong>{
+                    <strong>return</strong> 0;
+                }
+            }
+                </pre>
+                <p>Ou seja, deverá ser criado o percorredor e o auxiliar.</p>
+            <strong><li>Exibição da lista</li></strong>
+                <p>Esta função se torna bem simples, onde basicamente será gerado um <i>loop</i> que percorrerá todos os valores da lista e exibi-los:</p>
+                <pre>
+            <strong>int</strong> imprimirLista(Elem *lista){
+            
+                <strong>if</strong>(listaVazia(lista)){  //Verificação de lista vazia
+                    <strong>printf</strong>("\n LISTA VAZIA \n");
+                }<strong>else</strong>{
+                    Elem *aux;  //Percorredor da lista
+                    aux = lista;  //Atribuição da própria lista ao percorredor
+                    <strong>printf</strong>("\n LISTA:	");
+                    <strong>while</strong>(aux != NULL){  //Loop - parada quando alcançar prox = NULL (último prox da lista)
+                        <strong>printf</strong>(" - %d",aux->num);  //Exibição do elemento
+                        aux = aux->prox;  //Andamento do percorredor de posição a posição
+                    }	
+                    <strong>printf</strong>(" - ");	
+                }
+                <strong>return</strong> 0;
+            }
+                </pre>
+                <p>Função esta que possui uma implementação simples, pois basta criar um percorredor que pulará sobre todas as posições da lista e exibir estas posições.</p>
+            <strong><li>Liberar lista</li></strong>
+                <p>Por fim, a última função que deverá ser implementada é a de liberação da lista, a qual terá o objetivo de ao fim do programa, encerrar a lista e desalocar da memória tudos os elementos que foram alocados. Isto é importante, uma vez que se este procedimento não for realizado, algum lixo pode ficar armazenado na memória, trazendo possíveis problemas nos recursos e processamento da máquina. Para isso, é feito:</p>
+                <pre>
+            <strong>int</strong> liberarLista(Elem **lista){
+            
+                <strong>if</strong>(listaVazia(lista)){  //Verificação de lista vazia
+                    <strong>free</strong>(lista);  //Caso a lista esteja vazia, basta liberá-la
+                }<strong>else</strong>{
+                    Elem *aux, *aux2;  //Auxiliares que irá percorrer a lista
+                    aux = *lista;  //Atribuição da própria lista ao percorredor
+                    <strong>while</strong>(aux != NULL){  //Loop - parada quando alcançar prox = NULL (último prox da lista)
+                        aux2 = aux->prox;  //O auxiliar 2 irá receber o valor do próximo elemento
+                        <strong>free</strong>(aux);  //Liberação do elemento
+                        aux = aux2;  //Percorredor receberá o próximo elemento para futuramente liberá-lo.
+                    }
+                }
+            } 
+                </pre>
+                <p>De forma geral, bastará percorrer toda a lista e sair liberando cada posição dela e para isso, 2 auxiliares deverão ser criados, onde <i>aux</i> será o percorredor e <i>aux2</i> receberá o valor de <i>prox</i> (o elemento a posição seguinte). Pense que ao excluir uma posição, como saberá qual a próxima se o seu <i>prox</i> também foi excluido? Por isso o uso do <i>aux2</i>. Diante disso, basta excluir o elemento (aux) e fazer com que após isso, ele receba o próximo elemento (armazenado em aux2).</p>
+        </ol>
+    </body>
+</html>
