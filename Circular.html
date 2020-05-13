@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <title>Lista Circular- Estrutura de Dados</title>
+        <meta name="description" content="Este é um site referente à estudos de Estrutura de Dados">
+    </head>
+    <body>
+        <h1>Lista Circular - Estrutura de Dados</h1>
+        <p>A lista circular, assim como as demais, é composta por elementos que possuem um apontador seguinte (<i>*prox</i>). Porém, esta tem a peculiaridade de que o seu último elemento, ao invés de apontar para <i>NULL</i>, apontará para o <strong>primeiro elemento</strong> da lista, ou seja, fazendo-a ser um looping sem fim. De resto, a lista se faz extremamente semelhante a uma lista simplesmente encadeada, com funções de inserção, remoção e etc.</p>
+        <p>Portanto, seguem abaixo os procedimentos a serem seguidos para a sua criação:</p>
+        <ol>
+            <strong><li>Struct - Criação do elemento</li></strong>
+                <p>De maneira já conhecida, a struct de criação do elemento é bem simples, bastando apenas passar um valor e o seu apontador <i>*prox</i>:</p>
+                <pre>
+            <strong>struct</strong> elemento{
+                <strong>int</strong> num;
+                <strong>struct</strong> elemento *prox;
+            }
+                </pre>
+                <p>Posteriormente, é necessário passar esta struct como <i>typedef</i> para torna-la um tipo de variável: <strong><i>typedef struct elemento Elem</i>.</strong></p>
+            <strong><li>Criação da lista</li></strong>
+                <p>Exatamente como a lista simplesmente encadeada, onde basta retornar o valor <i>NULL</i> para a lista:</p>
+                <pre>
+            Elem *criar(<strong>void</strong>){
+                <strong>return</strong> NULL;
+            }
+                </pre>
+            <strong><li>Verificação de lista vazia</li></strong>
+                <p>A verificação de lista vazia servirá nas demais funções que virão a seguir, sendo esta uma verificação muito importante, mas ao mesmo tempo, muito simples de se implementar, bastanto retornar a lista como <i>NULL</i>:</p>
+                <pre>
+            <strong>int</strong> listaVazia(Elem *lista){
+                <strong>return</strong> (lista == NULL);
+            }
+
+                </pre>
+            <strong><li>Inserção de elemento no inicio</li></strong>
+                <p>A inserção de elemento no inicio que deve haver verificações de lista vazia e caso não esteja, realocação do <i>old</i>, assim como visto nas demais listas</p>
+                <pre>
+            <strong>int</strong> inserirInicioCircular(Elem **lista, int valor){
+	            Elem *novo;
+	            novo = (Elem *)<strong>malloc</strong>(<strong>sizeof</strong>(Elem));
+	            novo->num = valor;
+	            //Caso 1, lista vazia
+	            <strong>if</strong>(listaVazia(*lista)){
+	            	novo->prox = novo;
+	            	(*lista) = novo;
+	            }<strong>else</strong>{
+	            	//Caso 2, lista não vazia - Inserir no inicio
+	            	Elem *aux;
+	            	aux = *lista;
+	            	<strong>while</strong>(aux->prox != *lista){
+	            		aux = aux->prox;
+	            	}
+	            	aux->prox = novo;
+	            	novo->prox = *lista;
+	            	(*lista) = novo;
+	            }
+	            <strong>return</strong> novo;
+            }
+                </pre>
+            <strong><li>Inserção de elemento no final</li></strong>
+                <p>Aqqui onde está a grande peculiaridade da lista circular, pois o elemento que inserido no final, deverá possuir um apontador para o primeiro elemento. Mas de resto, sua implementação é bem simples e identica a das demais listas. Além do fato de que caso a lista esteja vazia, ocorrerá uma inserção no inicio da lista:</p>
+                <pre>
+            <strong>int</strong> inserirFimCircular(Elem **lista, int valor){
+	            Elem *novo;
+	            novo = (Elem *)<strong>malloc</strong>(<strong>sizeof</strong>(Elem));
+	            novo->num = valor;
+	            //Caso 1, lista vazia
+	            <strong>if</strong>(listaVazia(*lista)){
+	            	novo->prox = novo;
+	            	(*lista) = novo;
+	            }<strong>else</strong>{
+	            	//Caso 2, lista não vazia - Inserir no final
+	            	Elem *aux;
+	            	aux = *lista;
+	            	<strong>while</strong>(aux->prox != *lista){
+	            		aux = aux->prox;
+	            	}
+	            	aux->prox = novo;
+	            	novo->prox = *lista;
+	            }
+	            <strong>return</strong> 1;
+            }
+                </pre>
+            <strong><li>Remoção de elemento do inicio</li></strong>
+                <p>A remoção de elemento não possui aspecto de diferença alguma. Bastanto remover o elemento e fazer com que o seu <i>*prox</i> assuma o seu lugar.Além da verificação de lista vazia, de forma a não remover o que não existe.</p>
+                <pre>
+            <strong>int</strong> removerInicioCircular(Elem **lista){
+	            //Caso 1, lista vazia
+	            <strong>if</strong>(listaVazia(*lista)){
+	            	<strong>printf</strong>("\n LISTA VAZIA \n");
+	            	<strong>return</strong> 0;
+	            }<strong>else</strong>{
+	            	Elem *aux;
+	            	aux = *lista;
+	            	//Caso 2, lista contém 1 elemento
+	            	<strong>if</strong>(aux->prox == *lista){
+	            		<strong>free</strong>(aux);
+	            		*lista = NULL;
+	            	}<strong>else</strong>{
+	            		//Caso 3, lista contém +1 elemento
+	            		aux = aux->prox;
+	            		<strong>while</strong>(aux->prox != *lista){
+	            			aux = aux->prox;
+	            		}
+	            		aux->prox = (*lista)->prox;
+	            		<strong>free</strong>(*lista);
+	            		*lista = aux->prox;
+	            	}
+	            }
+            }
+                </pre>
+            <strong><li>Remoção de elemento do final</li></strong>
+                <p>A remoção de elemento do final é também muit simples, devendo exigir uma atenção maior na realocação do elemento anterior (necessidade de um segundo auxiliar) para que seu <i>*prox</i> aponte para o primeiro elemento</p>
+                <pre>
+            <strong>int</strong> removerFimCircular(Elem **lista){
+	        //Caso 1, lista vazia
+	        <strong>if</strong>(listaVazia(*lista)){
+	        	<strong>printf</strong>("\n LISTA VAZIA \n");
+	        	<strong>return</strong> 0;
+	        }<strong>else</strong>{
+	        	Elem *aux;
+	        	aux = *lista;
+	        	//Caso 2, lista contém 1 elemento
+	        	<strong>if</strong>(aux->prox == *lista){
+	        		<strong>free</strong>(aux);
+	        		*lista = NULL;
+	        	}<strong>else</strong>{
+	        		//Caso 3, lista contém +1 elemento
+	        		aux = aux->prox;
+	        		<strong>while</strong>(aux->prox->prox != *lista){
+	        			aux = aux->prox;
+	        		}
+	        		<strong>free</strong>(aux->prox);
+	        		aux->prox = (*lista);
+	        	}
+	        }
+        }
+                </pre>
+            <strong><li>Exibição da lista</li></strong>
+                <p>A exibição da lista se faz muito simples, onde será percorrida toda a lista exibindo elemento a elemento. A grande questão é o último elemento que não aponta para NULL. Então em tese, essa seria uma exibição infinita. Para que isso não aconteça, será feita um loop que só irá para quando o <i>aux</i> for igual a <i>lista</i>.</p>
+                <pre>
+            <strong>int</strong> imprimirListaCircular(Elem *lista){
+	            Elem *aux;
+	             <strong>if</strong>(listaVazia(lista)){
+	            	 <strong>printf</strong>("\n LISTA VAZIA \n");
+	            	 <strong>return</strong> 0;
+	            }
+	            aux = lista;
+	             <strong>printf</strong>("\n LISTA:	");
+	             <strong>do</strong>{
+	            	 <strong>printf</strong>(" %d ",aux->num);
+	            	aux = aux->prox;
+	            } <strong>while</strong>(aux != lista);
+	            <strong>printf</strong>("\n");
+	             <strong>return</strong> 1;
+            }
+                </pre>
+            <strong><li>Liberação da lista</li></strong>
+                <p>A liberação da lista já não é segedo algum, uma vez que é sempre a mesma para qalquer lista, bastando percorre-la e ir removendo elemento a elemento até que a lista esteja vazia:</p>
+                <pre>
+            <strong>int</strong> liberarListaCircular(Elem **lista){
+	            <strong>if</strong>(listaVazia(lista)){
+	            	<strong>printf</strong>("\n LISTA VAZIA \n");
+	            	<strong>return</strong> 0;
+	            }<strong>else</strong>{
+	            	Elem *aux, *aux2;
+	            	aux = (*lista)->prox;
+	            	aux2 = aux->prox;
+	            	<strong>while</strong>(aux2 != *lista){
+	            		<strong>free</strong>(aux);
+	            		aux = aux2;
+	            		aux2 = aux->prox;
+	            	}
+	            }
+            }
+                </pre>
+        </ol>
+    </body>
+</html>
