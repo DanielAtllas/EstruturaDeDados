@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <title>Pilha - Estrutura de Dados</title>
+        <meta name="description" content="Este é um site referente à estudos de Estrutura de Dados">
+    </head>
+    <body>
+        <h1>Pilha - Estrutura de Dados</h1>
+        <p>As pilhas em sua estrutura funcionam exatamente como uma lista encadeada, onde elementos são listados de forma que cada um possua um apontador para o elemento seguinte. O lance é que as pilhas possuem <strong>regras de inserção e remoção</strong> dos dados (e de certa forma, caso seja desejado, uma forma de exibição também). Pois imagine uma pilha de livros, onde livro é sempre colocado em cima de outro e nunca em baixo (<strong>inserido no final</strong>). Assim como quando um livro for retirado, será sempre o livro do topo da pilha (que por sua vez, foi o <strong>último a ser inserido</strong>).</p>
+        <p>Diante disso, é fácil dizer que a estrutura que uma pilha segue é exatamente a de <i>Last in, First Out</i>, onde sempre o último elemento que foi inserido, terá prioridade no momento de remoção. Como na ilustração abaixo:</p>
+        <img src="https://www.cos.ufrj.br/~rfarias/cos121/operacoesPilha1.png">
+        <p>Diante disso, sa implementação segue os seguintes procedimentos:</p>
+        <ol>
+            <strong><li>Criação de elemento - Struct</li></strong>
+                <p>Como dito anteriormente, a pilha segue uma estrutura igual a de listas. Logo, seus elementos possuem a mesma implementação também:</p>
+                <pre>
+            <strong>struct</strong> elemento {
+                <strong>int</strong> dado;
+                <strong>struct</strong> elemento *prox;
+            };
+                </pre>
+                <p>Posteriormente, essa struct deverá se tornar um tipo de variável, através do comando <i>typedef</i>.</p>
+            <strong><li>Criação da pilha - Struct</li></strong>
+                <p>Uma segunda struct também será criada, ela funcionará exatamente como um <strong>descritor</strong> que possuirá uma variável de quantidade de elementos da pilha e um apontador para o topo da pilha (último elemento). Sendo implementada assim:</p>
+                <pre>
+           <strong>struct</strong> pilha {	
+                <strong>int</strong> tamanho;
+                <strong>struct</strong> elemento *topo;
+            };
+
+                </pre>
+                <p>Esta struct também deverá ser tida como uma variável posteriormente, pelo comando <i>typedef</i>.</p>
+            <strong><li>Criação da pilha</li></strong>
+                <p>A função de criação da pilha será dada pela definição de valores na struct pilha, como descritora, ou seja, os valores iniciais da pilha serão passados aqui, como tamanho e o topo dela que será <i>NULL</i>:</p>
+                <pre>
+            Pilha *criarPilha(){
+	
+                Pilha *pilha;
+                pilha = <strong>malloc</strong>(<strong>sizeof</strong>(Pilha));
+                pilha->tamanho = 0;
+                pilha->topo = NULL;
+                <strong>return</strong> s;
+            }
+
+                </pre>
+                <p>Perceba que o tipo desta função é do tipo <i>Pilha</i> da struct criada e não do tipo <i>Elem</i>. Assim como a variável de alocação também será deste mesmo tipo <i>Pilha</i>.</p>
+            <strong><li>Verificação de lista vazia</li></strong>
+                <p>A função que mais é chamada durante todo o programa, que realiza veriicações na pilha caso tenha elementos ou não. Sendo bem simples na verdade, já que basta se orientar pelo valor de tamanho da pilha, dado na struct descritora (<i>pilha->tamanho</i>):</p>
+                <pre>
+            <strong>int</strong> pilhaVazia(Pilha *pilha){
+	
+                <strong>return</strong> (pilha->tamanho == 0);
+            }
+
+                </pre>
+            <strong><li>Inserção de elemento</li></strong>
+                <p>Como dito anteriormente, a inserção de elementos da pilha será sempre no topo da pilha (ou final dela), de forma a que seja também identificado pela variável <i>pilha->topo</i>:</p>
+                <pre>
+            <strong>int</strong> push(Pilha *pilha, <strong>int</strong> valor){
+	
+	           Elem *novo;
+	           novo = (Elem *)<strong>malloc</strong>(<strong>sizeof</strong>(Elem));
+	           novo->num = valor;
+	           novo->prox = pilha->topo;
+	           pilha->topo = novo;
+	           
+	           (pilha->tamanho)++
+                <strong>return</strong> 1;
+            }
+                </pre>
+                <p>Perceba que o <i>*prox</i> dos elementos será sempre o <i>pilha->topo</i> já que este aponta sempre para o último elemento, ou seja, sempre que um elemento é inserido, o <i>novo</i> deverá apontador pra o elemento <i>old</i> (indicado pela <i>pilha->topo</i>). Além disso, por se tratar agora do novo último elemento, o topo deverá apontar para ele agora. Por fim, como um novo elemento é inserido, o tamanho da pilha será aumentado.</p>
+            <strong><li>Remoção de elemento</li></strong>
+                <p>Com dito anteriormente, um elemento que for removido, deverá sempre estar na última posição da pilha, que po sua vez, é apontado pelo <i>pilha->topo</i>. Então para remove-lo, basta fazer com que o seu <i>*prox</i> assuma o seu posto de topo. Portanto, deverá contar com o auxilio de uma variável <i>aux</i>:</p>
+                <pre>
+            <strong>int</strong> pop(Pilha *pilha){
+
+	            <strong>if</strong>(pilhaVazia(pilha)){
+	            	return 0;
+	            }<strong>else</strong>{
+	            	Elem *aux;
+	            	aux = pilha->topo;
+	            	pilha->topo = pilha->topo->prox;
+	            	<strong>free</strong>(aux);
+	            }
+	            
+	            (pilha->tamanho)--;
+                  <strong>return</strong> 1;
+            }
+
+                </pre>
+                <p>Ao ser removido o elemento, não esqueça de que o tamanho da pilha será reduzido.</p>
+            <strong><li>Exibição da pilha</li></strong>
+                <p>A exibição da pilha deverá ser implementada de acordo com o gosto do programador, uma vez que ela pode assumir a forma de uma pilha na vertical ou na horizontal (a forma vertical seria a mais indicada por se tratar de uma pilha mesmo). Mas de resto, a função deverá apenas exibir os elementos um a um a começar pelo topo:</p>
+                <pre>
+            <strong>int</strong> imprimirPilha(Pilha *pilha){
+	
+	            <strong>if</strong>(pilhaVazia(pilha)){
+	            	<strong>return</strong> 0;
+	            }<strong>else</strong>{
+	            	Elemento *aux;
+	            	aux = pilha->topo;
+	            	<strong>printf</strong>("Pilha:	");
+	            	<strong>while</strong>(aux != NULL){
+	            		<strong>printf</strong>("\n %d", aux->num);
+	            		aux = aux->prox;
+	            	}
+	            }
+	            
+                 <strong>return</strong> 1;
+            }
+                </pre>
+        </ol>
+    </body>
+</html>
