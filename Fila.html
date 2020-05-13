@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <title>Fila - Estrutura de Dados</title>
+        <meta name="description" content="Este é um site referente à estudos de Estrutura de Dados">
+    </head>
+    <body>
+        <h1>Fila - Estrutura de dados</h1>
+        <p>As filas de programação são assim chamados por seguirem o mesmo principio de uma fila de chegada, além de sua estrutura muito semelhante a de listas, com elementos que possuem valores e apontadores para o elemento seguinte. Imagine uma fila de pessoas para a compra de um ingresso de cinema, onde quando uma pessoa nova chega, ela deverá ir para o <strong>final da fila</strong> e sempre que uma pessoa é atendida, é o atendimento da <i>primeira</i> pessoa fila. Ou seja, esse conceito se faz na programaçao, onde apenas serão inseridos elementos no final da fila, assim como só serão removidos elementos do inicio da fila.</p>
+        <p>Diante disso, pode-se afirmar que as filas seguem o conceito de <strong>First in, First Out</strong>, onde o elemento a ser removido, será sempre sempre o com prioridade de chegada. Como na ilustração abaixo:</p>
+        <img src="">
+        <p>Seguiremos então para as implementações da formação da filha de programação:</p>
+        <ol>
+            <strong><li>Criação de elemento - struct</li></strong>
+                <p>Por se tratar de elementos simples, estes terão apenas valores numéricos e apontadores para o elemento seguinte, assim como nas demais listas:</p>
+                <pre>
+            <strong>struct</strong> elemento {
+                <strong>int</strong> num;
+                <strong>struct</strong> elemento *prox;
+            };
+                </pre>
+                <p>Lembre-se de posteriormente declarar esta struct como variável, através do comando <i>typedef</i>.</p>
+        <strong><li>Criação da fila - struct</li></strong>
+                <p>Uma segunda struct dee ser criada, funcionando como um descritor que conterá valores do tamanho da fila e apontadores para o inicio e fim da mesma:</p>
+                <pre>
+            <strong>struct</strong> fila {
+                <strong>int</strong> tamanho;
+                <strong>struct</strong> elemento *inicio;
+                <strong>struct</strong> elemento *fim;
+            };
+
+            </pre>
+                <p>Esta também deve ser tida como uma variável posteriormente, através do comando <i>typedef</i>.</p>
+            <strong><li>Criação da fila</li></strong>
+                <p>Na função de criação da fila, devem ser passados os valores iniciais descritos na struct acima, ou seja, um tamanho inicial da fila, assim como o seu inicio e fim (sendo <i>NULLS</i> neste caso):</p>
+                <pre>
+            Fila *criarFila(){
+	
+                Fila *fila;
+                fila = <strong>malloc</strong>(<strong>sizeof</strong>(Fila));
+                fila->tamanho = 0;
+                fila->inicio = NULL;
+                fila->fim = NULL;
+                
+                <strong>return</strong> fila;
+            }
+                </pre>
+            <strong><li>Verificação de lista vazia</li></strong>
+                <p>A verificação é bem simples, onde ela estará vazia caso o tamanho da fila seja de zero, ou seja, nenhum elemento:</p>
+                <pre>
+            <strong>int</strong> filaVazia(Fila *fila){
+	
+                <strong>return</strong> ((fila->tamanho) == 0);
+            }
+                </pre>
+            <strong><li>Inserir elemento</li></strong>
+                <p>Como dito anteriormente, a inserção de elementos em uma fila será sempe <strong>no final da fila</strong>. Logo, o valor de <i>fila->fim</i> deverá ser atualizado sempre que um novo elemento or inserido. Assim como o tamanho da fila também deverá ser atualizado:</p>
+                <pre>
+            <strong>int</strong> inserirFila(Fila *fila, <strong>int</strong> valor){
+	
+	            Elem *novo;
+	            novo = (Elem *)<strong>malloc</strong>(<strong>sizeof</strong>(Elem));
+	            novo->num = valor;
+	            <strong>if</strong>(filaVazia(fila)){
+	            	//Caso 1, fila vazia
+	            	fila->inicio = novo;
+	            }<strong>else</strong>{
+	            	//Caso 2, inserir no final
+	            	fila->fim->prox = novo;
+	            }
+	            fila->fim = novo;
+	            
+	            (fila->tamanho)++;
+                 <strong>return</strong> 1;
+            }
+                </pre>
+            <strong><li>Remoção de elemento</li></strong>
+                <p>A remoção de elementos tambémé bem simples, bastanto remover o primeiro elemento e fazer com que o seu seguinte assuma o seu posto:</p>
+                <pre>
+            <strong>int</strong> removerFila(Fila *fila){
+	            <strong>if</strong>(filaVazia(fila)){
+	            	<strong>printf</strong>("\n FILA VAZIA \n");
+	            	<strong>return</strong> 0;
+	            }<strong>else</strong>{
+	            	Elem *aux;
+	            	aux = fila->inicio;
+	            	fila->inicio = fila->inicio->prox;
+	            	<strong>free</strong>(aux);
+	            }
+                 <strong>return</strong> 1;
+            }
+                </pre>
+            
+            <strong><li>Exibição da fila</li></strong>
+                <p>A exibição da fila é bem simples e exatamente como as demais em listas, onde será passado um auxiliar que percorrerá todos os elementos da fila, exibindo um a um</p>
+                <pre>
+            <strong>int</strong> imprimirFila(Fila *fila){
+	
+	            <strong>if</strong>(filaVazia(fila)){
+	            	<strong>printf</strong>("\n FILA VAZIA \n");
+	            	<strong>return</strong> 0;
+	            }<strong>else</strong>{
+	            	Elemento *aux;
+	            	aux = fila->inicio;
+	            	<strong>printf</strong>("\n Fila:	");
+	            	<strong>while</strong>(aux != NULL){
+	            		<strong>printf</strong>(" - %d",aux->num);
+	            		aux = aux->prox;
+	            	}
+	            	<strong>printf</strong>(" - \n\n");
+	            }
+	            
+                 <strong>return</strong> 1;
+            }
+                </pre>
+            
+        </ol>
+    </body>
+</html>
