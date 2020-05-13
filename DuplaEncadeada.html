@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <title>Lista duplamente encadeada - Estrutura de Dados</title>
+        <meta name="description" content="Este é um site referente à estudos de Estrutura de Dados">
+    </head>
+    <body>
+        <h1>Lista Duplamente Encadeada - Estrutura de Dados</h1>
+        <p>Uma lista duplamente encadeada se baseia em uma lsta que conterá <strong>elementos com 2 ponteiros</strong>. Dessa forma, através desses elementos, a lista poderá ser varrida tanto de uma forma crescente, como decrescente. Ou seja, esses elementos irá possuir apontadores para o elemento anterior e para o elemento seguinte, tornando-a mais fácil de manuseio e percorrimento. Para isso, a lista duplamente encadeada contará com o auxílio de um <strong>descritor</strong> que funcionará como um <strong>elemento universal</strong> que irá se encontrá fora da lista. Este terá a função de facilitar a orientação da lista, conseguindo indicar e manipular de maneira mais fácil os elementos de inicio e fim da lista, além de conter um indicador da quantidade de elementos que a lista possui.</p>
+        <p>De forma geral, suas funções continuam na mesma ideia que das demais listas, onde terá de criar a lista, inserir elemento, remover elemento e liberar a lista. Porém, a grande segredo estará nas funções de inserção e remoção de elemento, uma vez que agora 2 ponteiros estarão sendo trabalhados. Portando, segue abaixo as etapas a serem seguidas para a criação da lista duplamente encadeada:</p>
+        <ol>
+            <strong><li>Criação dos elementos - Struct Elem</li></strong>
+                <p>Os elementos da lsta serão de extrema semeçhança dos demais elementos das outras listas, com a única diferença de 1 ponteiro a mais, o apontador para o elemento anterior, que terá a mesma forma do apontador <i>prox</i>. Criados por uma <i>struct</i> simples:</p>
+                <pre>
+            <strong>/*Struct - Elemento*/</strong>
+            <strong>struct</strong> elemento{
+            
+                <strong>struct</strong> elemento *ant;
+                <strong>int</strong> valor;
+                <strong>struct</strong> elemento *prox;
+            }
+            
+            <strong>typedef struct</strong> elemento Elem;
+                </pre>
+                <p>Perceba que sua decalaração de <i>typedef</i> se deu logo em seguida de sua criação, isso pelo fato de sua chamada ser necessáia na <i>struct</i> seguinte.</p>
+            <strong><li>Criação do descritor - Struct Desc</li></strong>
+                <p>Como dito anteriormente, para o bom fucionamento dessa lista, ela deverá contar com o acompanhamento de um <strong>descritor</strong> que conterá apontadores para os elementos de inicio e de fim da lista, além de uma variável contadora que receberá a quantidade de elementos existentes na lista. Essa <i>struct</i> ficará logo em seguida a criação da <i>struct</i> de elementos, pois receberá parâmetros da <i>struct</i> de elemento. Logo, sua criação se dá por uma simples <i>struct</i>:</p>
+                <pre>
+            <strong>/*Struct - Descritor*/</strong>
+            <strong>struct</strong> descritor{
+                
+                Elem *inicio;
+                <strong>int</strong> tamanho;
+                Elem *final;
+            }
+                </pre>
+                <p>Os apontadores para os elementos de inicio e fim, deverá ser exatamente dos mesmos tipos dos demais elementos, afinal, também será elementos a serem apontados. Logo, devem ser ponteiros do tipo <i>Elem</i>. Além disso, no momento de criação da lista no arquivo <i>main.c</i>, ela ao invés de ser declarada como <i>Elem</i>, será como <i>Descritor</i>, ou seja: <strong><i>Descritor *lista</i>;</strong></p>
+            <strong><li>Criação da lista - cria()</li></strong>
+                <p>A função que realiza a criação da lista se faz diferente das demais, onde nas listas simples e encadeada, apenas retornava um valor <i>NULL</i>. Nesta lista, por se tratar de um descritor, devemos passar os valores iniciais do descritor e da lista nesta função. Portanto, deverá ser criada uma alocação dinâmica da lista sendo do tipo <i>Descritor</i> e passar os valores iniciais do descritor:</p>
+                <pre>
+            Descritor <strong>*</strong>criar(<strong>void</strong>){
+                
+                Descritor *descritor;
+                descritor = (Descritor *)<strong>malloc</strong>(<strong>sizeof</strong>(Descritor));
+                descritor->final = <i>NULL</i>;
+	            descritor->inicio = <i>NULL</i>;
+	            descritor->tamanho = 0;
+	
+	            <strong>return</strong> descritor;
+            }
+                
+                </pre>
+                <p>Dessa forma, o descritor que aponta para o elemento inicial e final da lista, recebe valores <i>NULL</i> já que inicialmente a lista não possui elemento algum. Assim como o tamanho da lista é zero.</p>
+            <strong><li>Inserção de elemento</li></strong>
+                <p>Por se tratar de uma lista duplamente encadeada, deduz-se que a lista será automaticamente <strong>encadeada</strong>. Portanto, seus valores da função se tornam muito semelhantes a de lista ordenada. Além disso, <strong>4 verificações</strong> devem ser realizadas:</p>
+                <ol>
+                    <li>Lista vazia - Caso seja vazia, o elemento será inserido no inicio.</li>
+                    <br>
+                    <li>Inserir Inicio - Pode ser que o elemento a ser inserido, seja menor que o primeiro elemento (como lista ordenada). Logo, deverá ser inserido no inicio.</li>
+                    <br>
+                    <li>Inserir Final - Pode ser que o elemento a ser inserido seja maior que o último elemento, devendo assim assumir o posto de último elemento.</li>
+                    <br>
+                    <li>Inserir meio - E por fim, pode ser que o valor seja menor que nas 2 sitações acima, devendo então ser inserido em meio a lista.</li>
+                </ol>
+                <p>O grande ponto aqui, é que além de definir o <i>*prox</i> de cada elemento, também indicaremos o <i>*ant</i> e se necessário, o faremos <i>descritor->inicio</i> ou <i>descritor->final</i>.</p>
+                <pre>
+            <strong>int</strong> inserir(Descritor *descritor, <strong>int</strong> valor){
+            
+                Elem *novo;
+                novo = (Elem *)<strong>malloc</strong>(<strong>sizeof</strong>(Elem));
+                novo->num = valor;
+                novo->ant = <i>NULL</i>;
+                novo->prox = <i>NULL</i>;
+                
+                //Caso 1 - Lista vazia
+                <strong>if</strong>(descritor->tamanho == 0){
+                    descritor->inicio = novo;
+                    descritor->final = novo;
+                }<strong>else</strong>{
+                    //Caso 2 - Inserir Inicio
+                    <strong>if</strong>(valor &lt; descritor->inicio->num){
+                        descritor->inicio->ant = novo;
+                        novo->prox = descritor->inicio;
+                        descritor->inicio = novo;
+                    }<strong>else</strong>{
+                        //Caso 3 - Inserir final
+                        <strong>if</strong>(valor > descritor->final->num){
+                            descritor->final->prox = novo;
+                            novo->ant = descritor->final;
+                            descritor->final = novo;
+                        }<strong>else</strong>{
+                            //Caso 4 - Inserir meio
+                            Elem *aux;
+				            aux = descritor->inicio->prox;
+				            <strong>while</strong>(aux->num &lt; valor){
+				            	aux = aux->prox;
+				            }
+				            novo->prox = aux;
+				            novo->ant = aux->ant;
+				            aux->ant->prox = novo;
+				            aux->ant = novo;
+                        }
+                    }
+                }
+                
+                (descritor->tamanho)++;
+                <strong>return</strong> 1;
+            }
+                </pre>
+                <p>Peceba que ao final da função, não pode-se esquecer de que como um novo elemento foi inserido, o tamanho da lista aumentou (<i>descritor->tamanho</i>).</p>
+            <strong><li>Remoção de elemento</li></strong>
+                <p>A remoção de elementos da lista duplamente encadeada segue a mesma lógica das demais listas, onde dependendo da posição do elemento que for removido, os seus arredores devem ser realocaods de forma a manter a linhagem da lista. Diante disso, <strong>5 verificações</strong> devem ser realizadas:</p>
+                <ol>
+                    <li>Lista vazia - Caso seja vazia, o elemento algum será removido.</li>
+                    <br>
+                    <li>Remover único - Caso exista apenas 1 elemento, a lista deverá voltar a seu estado inicial.</li>
+                    <br>
+                    <li>Remover Inicio - Caso o primeiro seja a ser removido, o seu <i>*prox</i> deverá assumir o posto.</li>
+                    <br>
+                    <li>Remover Final - Caso o último seja a ser removido, o seu <i>*ant</i> deverá assumir o posto.</li>
+                    <br>
+                    <li>Remover meio - E por fim, pode ser que o elemento a ser removido esteja entre a lista o seu <i>*ant</i> ou <i>*prox</i> devem ser realocados.</li>
+                </ol>
+                <pre>
+            <strong>int</strong> remover(Descritor *descritor, <strong>int</strong> valor){
+                //Caso 1 - Lista vazia
+                <strong>if</strong>(descritor->tamanho == 0){
+                    <strong>return</strong> 0;
+                }<strong>else</strong>{
+                    Elem *aux;
+                    //Caso 2 - Remover único
+                    <strong>if</strong>(descritor->tamanho == 1 <strong>&&</strong> descritor->inicio->num == valor){
+                        aux = descritor->inicio;
+		                <strong>free</strong>(aux);
+		                descritor->inicio = <i>NULL</i>;
+		                descritor->final = <i>NULL</i>;
+                    }<strong>else</strong>{
+                        //Caso 3 - Remover inicio
+                        <strong>if</strong>(descritor->inicio->num == valor){
+			                 aux = descritor->inicio;
+			                 descritor->inicio = aux->prox;
+			                 descritor->inicio->ant = NULL;
+			                 <strong>free</strong>(aux);
+                        }<strong>else</strong>{
+                            //Caso 4 - Remover final
+                            <strong>if</strong>(descritor->final->num == valor){
+			                 	aux = descritor->final;
+			                 	descritor->final = aux->ant;
+			                 	descritor->final->prox = NULL;
+			                 	<strong>free</strong>(aux);
+			                 }<strong>else</strong>{
+                                //Caso 5 - Remover meio
+                                aux = descritor->inicio->prox;
+				                <strong>while</strong>(aux->num &lt; valor){
+				                	aux = aux->prox;
+				                }
+				                <strong>if</strong>(aux->num == valor){
+				                	aux->ant->prox = aux->prox;
+				                	aux->prox->ant = aux->ant;
+				                	<strong>free</strong>(aux);
+				                }<strong>else</strong>{
+				                	<strong>return</strong> 0;
+				                }
+                             }                 
+                        }
+                    }
+                }
+                (descritor->tamanho)--;
+	            <strong>return</strong> 1;
+            }
+                </pre>
+                <p>Perceba que na última verificação, de remoção do inicio, foi também verificado se o <i>aux->num == valor</i>. Isso pel fato de que há a possibilidade de que o valor a ser removido, <strong>não se encontre na lista</strong>, fazendo com que elemento algum seja removido. Além disso, não pode-se esquecer que ao remover um elemento, o tamanho (descritor->tamanho) da lista deverá ser diminuido.</p>
+            <strong><li>Exibição da lista</li></strong>
+                <p>A exibição da lista é exatamente a mesma para qualquer outra lista, sempre exibindo o <i>aux</i> até que seja enontrado o NULL:</p>
+                <pre>
+            <strong>int</strong> liberarLista(Descritor **descritor){
+                <strong>if</strong>(descritor->tamanho == 0){
+	            	<strong>printf</strong>("\n LISTA VAZIA \n");
+	            	<strong>return</strong> 0;
+	            }<strong>else</strong>{
+	            	Elem *aux;
+	            	<strong>printf</strong>("\n LISTA:	");
+	            	aux = descritor->inicio;
+	            	<strong>while</strong>(aux != NULL){
+	            		<strong>printf</strong>("- %d ",aux->num);
+	            		aux = aux->prox;
+	            	}
+	            	<strong>printf</strong>("- ");
+	            	<strong>return</strong> 1;
+	            }
+            }
+                </pre>
+            <strong><li>Liberação da lista</li></strong>
+                <p>A lberação se faz muito semelhante a exibição, bastando percorrer a lista removendo o elemento <i>aux</i> até que toda a lista seja removida.</p>
+                <pre>
+            <strong>int</strong> liberarLista(Descritor **descritor){
+                <strong>if</strong>((*descritor)->tamanho == 0){
+                    <strong>return</strong> 0;
+                }
+                Elem *aux;
+                aux = (*descritor)->inicio;
+                <strong>while</strong>((*descritor)->inicio != NULL){
+                    (*descritor)->inicio = aux->prox;
+                    <strong>free</strong>(aux);
+                    aux = (*descritor)->inicio;
+                }
+                <strong>free</strong>(*descritor);
+                
+                <strong>return</strong> 1;
+            }
+
+                </pre>
+        </ol>
+    </body>
+</html>
