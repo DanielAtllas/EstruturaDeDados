@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <title>Hash - Estrutura de dados</title>
+        <meta name="description" content="Este é um site referênte à estudos sobre estrutura de dados">
+    </head>
+    
+    <body>
+        <h1>Tabela Hash - Estrutura de Dados</h1>
+        <p>Na tabela hash, <strong>vetores são usados</strong> ao invés de listas, devido a sua velocidade de acesso, pois através de um índice, a velocidade de acesso aos elementos se torna muito mais ráoida, facilitando a consulta e percorrimento da tabela. Dessa forma, ao consultar algum elemento, o valor de procura/parâmetro a ser passado, será exatamente do dado do elemento, mas o objeto de retorno será o índice da posição que o elemento se encontra. Como no exemplo abaixo:</p>
+        <pre>
+    Parâmetro = Marcos
+        |
+        --------------------
+                           |
+                           V
+        --- --- --- --- --------- --- ---
+       |   |   |   |   | Marcos  |   |   |
+        --- --- --- --- --------- --- ---
+                           |
+                           ------> índice/Posição = 4
+        </pre>
+        <p>Essa busca e retorno, é realizada por ua função, a <strong>função hashing</strong>, que recebe parâmetrode entrada (o dado a se pesquisar) e retornando o índice (posição do elemento), acessando posteriormente o índice de forma direta. Um problema que pode acontecer nesta função, é o pocesso de <strong>colisão</strong>, onde 2 parâmetros diferentes podem retornar um mesmo índice. Ou seja, um mesmo índice pode ser referenciado por 2 elementos diferentes e isso é normal.</p>
+        <p>Logo, a struct que deverá ser criada para a tabela hash (vetor), possuirá os seguintes dados:</p>
+        <ul>
+            <li><strong>Tamanho</strong> - Variável de tipo <i>int</i>, irá fornecer o tamanho/quantidade de índices total do vetor</li>
+            <br>
+            <li><strong>Quantidade</strong> - Variável de tipo <i>int</i>, irá fornecer a quantidade de elementos presentes no vetor</li>
+            <br>
+            <li><strong>Ponteiro</strong> - Apontador que irá apontar diretamente para o vetor em questão</li>
+        </ul>
+        <p>Além disso, cada posição do vetor terá um segundo apontador que indicará o elemento daquela posição. Neste caso, os elementos podem ser criados a partir de uma struct, dessa forma a posição do vetor deverá apontar para essa struct do elemento. Diante disso, ao inserir um elemento, este passa pela função hashing e é alocado em uma posição do vetor.</p>
+        <p>Ou seja, imagine um pequeno país com pouco menos de 100 mil cidadãos, onde o CPF e o nome, são identificadores de cada cidadão. É fácil perceber que o nome de uma pessoa pode facilmente se repetir inúmeras vezes, fazendo a ocorrência de duplicadas. Porém, o CPF é algo único de cada cidadão, sendo assim considerado o ID de cada um, ou no caso da tabela has, a <strong>chave</strong> de um elemento:</p>
+        <pre>
+        <strong>chave  valor associado</strong>
+        01555  Ronaldo
+        01567  Pelé
+        ...    ...
+        80114  Maradona
+        80320  Dunga
+        95222  Romário
+        </pre>
+        <p>Neste caso, para se armazenar esses elementos, um vetor de no mínimo 100 mil posições deverá ser criado. Este <strong>vetor</strong> é o que vem a ser a <strong>tabela hash</strong></p>
+        <p>Um outro exemplo que podemos dar com a tabela hash, é de uma lista cuja o valor chave do elemento, são os nomes dos cidadãos. Neste caso, esses elementos seriam ordenados por ordem alfabética (de acordo com o valor chave) e 2 implementações seriam feitas, onde 1 seria a lista ordenada do nome de cada cidadão e 2 seria uma tabela hash, onde em cada posição do vetor, estaria uma letra do alfabeto. Dessa forma, um vetor de 26 posições seria criado e ao referênciar uma posição X que indique uma letra Y. O programa partiria para o primeiro elemento da lista que começar com tal letra do alfabeto:</p>
+        <pre>
+        <strong>chave                 valor associado</strong>
+        Antonio Silva         8536152  
+        Arthur Costa          7210629  
+        Bruno Carvalho        8536339  
+        ...                   ...      
+        Vitor Sales           8535922  
+        Wellington Lima       5992240  
+        Yan Ferreira          8536023  
+        </pre>
+        <p>Para acelerar as buscas, divida a lista em 26 pedaços: os nomes que começam com "A", os que começam com "B", etc.</p>
+        <p>Como mencionado anteriormente, a função hashing fará a inserção desses elementos no vetor, de forma a gerar um índice para a chave do elemento. Dessa forma, será possível buscar o elemento de maneira mais rápida, a partir do seu índice/posição indicado no vetor. Além disso, como dito anteriormente, um mesmo índice pode referência mais de um elemento (como no exemplo acima da ordem alfabética), mas um elemento só poderá responder a apenas 1 índice.</p>
+        <p>Veja bem, na tabela hash (vetor) os elementos que serão armazenados (chaves) não necessitam estar de maneira ordenada, pois eles podem muito bem estar espalhados por todo vetor, de forma que o mesmo contenha posições vazias. Ou seja, a forma como a chave será inserida em determinado índice é indiferente, desde que este índice indique a chave correta junto ao seu elemento correto.</p>
+        <h3>Implementação da hashing - Divisão</h3>
+        <p>Existem diferentes formas de implementação da função hashing, e uma das mais comuns é através do <strong>resto da divisão</strong>, onde dado um elemento de valor inteiro, dividindo-o pelo tamanho total da tabela e obtendo o resto desta divisão, o elemento será inserido na posição indicada. Ou seja, ao obter o resto de valor X, o elemento será inserido na posição X do elemento. Da seguinte forma:</p>
+        <pre>
+        Elem: 257
+        Tam. vetor: 10
+        
+        257%10 = 7
+        
+        --- --- --- --- --- --- --- --- --- ---
+       |   |   |   |   |   |   |   |<strong>257</strong>|   |   |
+        --- --- --- --- --- --- --- --- --- ---
+         0   1   2   3   4   5   6   7   8   9
+        </pre>
+        <p>Perceba que esta implementação funciona <strong>apenas com valores numéricos</strong>, elementos numéricos. Caso se depare com elementos de valor diferente, como <i>char</i>, será necessário realizar uma <strong>conversão</strong> para obter novamente um valor numérico. Ou seja, caso o elemento seja <i>string</i>, converta-o para <i>int</i> e faz-se a implementaçao hashing, através da seguinte função:</p>
+        <pre>
+    <strong>int</strong> valorString(<strong>char</strong> *s){
+    
+        <strong>int</strong> valor = 0;
+        <strong>int</strong> i;
+        <strong>for</strong>(i=0;i&lt;<strong>strlen</strong>(s);i++){
+            valor = valor+(<strong>int</strong>)s[i];
+        }
+        <strong>return</strong> valor;
+    }
+        </pre>
+        <p>Obtendo este valor, parte-se para a criação de função hash, para determinar uma posição para o elemento:</p>
+        <pre>
+    <strong>int</strong> hashingDivisao(<strong>int</strong> chave, <strong>int</strong> tamanho){
+    
+        <strong>return</strong> (chave & 0x7fffffff)%tamanho;
+    }
+        </pre>
+        <p>Perceba o uso do código <i>0x7fffffff</i>, este funciona como um validador na geração de índices para o elemento, onde previni a função de gerar valores negativos. Pois independente do número (índice) que for gerado, na sua forma binária se seu último bit for zero, este é será número (índice) positivo.</p>
+        <p>Para prevenção de colisões, utilizamos do processo de <strong>sondagem linear</strong>, onde basicamente, antes de alocar o elemento no índice, é verificado se aquele índice em questão já possui elemento. Caso não, segue-se normal. Caso sim, é recalclado o índice até encontraro índice disponível.</p>
+        <p>Tendo estas introduções entendidas e como sua implementação é fetia, partiremos para a criação do script:</p>
+        <ol>
+            <strong><li>struct - Criação de elemento</li></strong>
+                <p>O elemento da tabela hash deverá conter os dados que compõem este elemento. Como citado no exemplo anterior de cidadãos, partiremos do mesmo princípio. Portanto, criaremos uma <i>struct</i> que conterá os dados do cidadão:</p>
+                <pre>
+            <strong>struct</strong> elemento{
+                <strong>int</strong> CPF;
+                <strong>char</strong> Nome[200];
+            }
+                </pre>
+                <p>Lembre-se de posteriormente transformar esta struct como uma tipo de variável, através do comando <i>typedef</i>.</p>
+            <strong><li>struct - Criação da tabela hash (vetor)</li></strong>
+                <p>Aqui o vetor da tabela hash também terá um formato de <i>struct</i> como mencionado anteriormente, o qual deverá conter variáveis de <strong>tamanho da tabela</strong> (quantidade de posições do vetor), <strong>quantidade</strong> (indicação da quantidade de elementos inseridos) e o <strong>ponteiro</strong> (indicador direto para os elementos a partir do índice):</p>
+                <pre>
+            <strong>struct</strong> hash{
+                <strong>int</strong> tamanho;
+                <strong>int</strong> qtd;
+                <strong>struct</strong> elemento **itens;
+            }
+                </pre>
+                <p>Por se tratar de uma <i>struct</i> que será usada para a criação da tabela, esta também deverá ser transformada em tipo de variável, a partir do comando <i>typedef</i>.</p>
+            <strong><li>Criação da tabela hash</li></strong>
+                <p>Esta será a função que criará o vetor e iniciará os índices com valores <i>NULL's</i> (uma vez que a princípio, a tabela se encontra vazia). Por não se tartar de uma lista, onde posições são criadas de maneira indecisa, mas sim de maneira fixa, é necessário alocar dinamicamente todos as posições do vetor:</p>
+                <pre>
+            <strong>Hash</strong> *cria(<strong>int</strong> tamanho){
+                Hash *ha = (Hash *)<strong>malloc</strong>(<strong>sizeof</strong>(Hash));
+                <strong>if</strong>(ha != NULL){
+                    <strong>int</strong> i;
+                    ha->tamanho = tamanho;
+                    ha->itens = (<strong>struct</strong> Elem**)<strong>malloc</strong>(tamanho * <strong>sizeof</strong>(<strong>struct</strong> Elem*));
+                    ha->qtd = 0;
+                    <strong>for</strong>(i=0; i &lt; ha->tamanho; i++){
+                        ha->itens[i] = NULL;
+                    }
+                }
+                <strong>return</strong> ha;
+            }
+                </pre>
+                <p>Ou seja, no primeiro momento, criamos a tabela hash de forma dinamicamente alocada, depois indicamos que o tamanho desta tabela será de tamanho (Neste caso, subentende-se que o tamanho será indicado pelo usuário. Portanto implemente um <i>scanf()</i> que peça ao usuário o tamanho total deste vetor) e logo em seguida faremos uma alocação dinãmica da tabela em formato de vetor, em que cada uma de suas posições/índice será do tipo <i>Elem</i> (<i>(<strong>struct</strong> Elem**)<strong>malloc</strong>(tamanho * <strong>sizeof</strong>(<strong>struct</strong> Elem*));</i>). Por fim, basta percorrer o vetor criado, inserindo valores <i>null's</i> em cada uma das posições.</p>
+                <p><strong>OBS: No processo de indicação do tamanho da tabela hash (vetor), é importante que este seja um tamanho de valor primo e que não seja uma potência de 2. Pois a partir desta observação, será evitada/reduzida a quantidade de colisões possíveis na tabela. Portanto, fica a escolha do programador sugerir isto ao usuário ou forçar que o usuário indique apenas tamanhos primos e que não sejam potência de 2.</strong></p>
+            <strong><li>Função hashing</li></strong>
+                <p>Esta é a função de alocação da chave de elemento em alguma posição da tabela (vetor) (o mesmo conceito é seguido para o processo de <strong>busca</strong> dos elementos na  tabela). Esta permite calcular/definir uma posição para o elemento a partir de sua chave e destribuir de forma equilibrada esses elementos. Basicamente, a partir de um elemento e sua chave, a função hashing irá trabalhar com o valor da chave e irá gerar uma posição. A partir dest posição determinada, o elemento será inserido na tabela hash, de forma que esta função evite o máximo de colisões possíveis.</p>
+                <p>Diferentes ormas de implementação são possíveis, ficando a mercer do programador qual escolher. Porém, a mais comum é com o <strong>método da divisão</strong> mencionado anteriormente, onde a partir do resto da divisão entre a chave e o tamanho da tabela, é obtdo a posição em questão:</p>
+                <pre>
+            <strong>int</strong> hashingDivisao(<strong>int</strong> chave, <strong>int</strong> tamanho){
+    
+                <strong>return</strong> (chave & 0x7fffffff)%tamanho;
+            }
+                </pre>
+            <strong><li>Inserção de elemento</li></strong>
+                <p>Tendo a função de hashing criada, podemos partir para a função que fará a alocação do elemento na tabela. Onde basicamente iremos coletar a posição gerada na função anterior e faremos uma alocação dinâmica do elemento na tabela. Primeiramente, é verificada as posições da tabela, onde caso todas estejam ocupadas, não é possível inserir elemento algum. Mas caso ainda restem posições vazias, segue-se a alocação:</p>
+                <pre>
+            <strong>int</strong> inserirHash(Hash *ha, Elem *cidadao){
+                <strong>if(ha->qtd == ha->tamanho)</strong>{
+                    <strong>return </strong>0;
+                }<strong>else</strong>{
+                    <strong>int</strong> chave, pos;
+                    chave = cidadao->CPF;
+                    pos = hashingDivisao(chave,ha->tamanho);
+                    Elem *novo;
+                    novo = (Elem *)<strong>malloc</strong>(<strong>sizeof</strong>(Elem));
+                    novo = cidado;
+                    ha->itens[pos] = novo;
+                    ha->qtd++;
+                    
+                    <strong>return</strong> 1;
+                }
+            }
+                </pre>
+                <p>Perceba que em tese, sua implementação é bem simples, pois caso ainda existam posições vazias, coletamos a chave do elemento e a posição gerada na função hashing. Depois fazemos uma alocação dinâmica do elemento na memória e atribuimos ele a osição X da tabela (vetor). Por fim, basta incrementar o <i>qtd</i> que contabiliza a quantidade de elementos já inseridos.</p>
+            <strong><li>Busca de elemento</li></strong>
+                <p>Como dito, a função de busca se assemelha muito a de inserção pel fato de contar com o auxílio da função hashing. Mas basicamente, sua tarefa será de calcular a posição da chave do elemento desejado, ou seja, exigido um elemento pelo usuário, sua chave será buscada em meio a tabela (vetor) a qual pode se encontrar a chave (nese caso, será retornado o índice/posição que a chave do elemento se encontra) ou não se encontrar (caso em que o elemento é inexistente).</p>
+                <pre>
+            <strong>int</strong> buscaHash(Hash *ha, <strong>int</strong> chave, Elem *cidado){
+                <strong>if</strong>(ha->qtd == 0){
+                    <strong>return</strong> 0;
+                }<strong>else</strong>{
+                    <strong>int</strong> pos;
+                    pos = hashingDivisao(chave,ha->tamanho);
+                    <strong>if</strong>(ha->itens[pos] == NULL){
+                        <strong>return</strong> 0;
+                    }<strong>else</strong>{
+                        cidado = *(ha->itens[pos]);
+                        <strong>return</strong> 1;
+                    }
+                    
+                }
+            }
+                </pre>
+            <strong><li>Liberação da tabela hash</li></strong>
+                <p>A parte de liberação se faz muito semelhante às medidas vistas anteriormente em listas, pois basta percorrer todo o vetor removendo cada elemento. Ao alcançar o vetor vazia, o vetor é destruído:</p>
+                <pre>
+            <strong>int</strong> libera(Hash *ha){
+                <strong>if</strong>(ha->qtd == 0){
+                    <strong>free</strong>(ha->itens);
+                    <strong>free</strong>(ha);
+                }<strong>else</strong>{
+                    <strong>int</strong> i;
+                    <strong>for</strong> (i=0; i &lt; ha->tamanho; i++){
+                        <strong>free</strong>(ha->itens[i]);
+                    }
+                    <strong>free</strong>(ha->itens);
+                    <strong>free</strong>(ha);
+                }
+            }
+                </pre>
+        </ol>
+    </body>
+</html>
