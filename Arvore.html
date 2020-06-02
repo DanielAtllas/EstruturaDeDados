@@ -7,365 +7,297 @@
         <meta name="description" content="Este é um site referente à estudos sobre arvores em Estrutura de dados.">
     </head>
     <body>
-        <h1>Arvores - Estrutura de Dados</h1>
-        <p>É uma abstração matemática usada para representar uma <strong>estrutura hierárquica</strong> não linear, definida por um conjunto de <strong>nós</strong> e <strong>arestas</strong>. Além disso, possuem 3 características que a definem:</p>
-        <ol>
-            <li>Não direcionada</li>
-                <p>Não existe <strong>nenhuma orientação</strong> quanto ao <strong>sentido das arestas</strong>.</p>
-            <li>Conexa</li>
-                <p>Existe exatamente um <strong>caminho entre</strong> quaisquer <strong>dois vertices</strong> na árvore.</p>
-            <li>Acíclica</li>
-                <p><strong>Não possui ciclos.</strong></p>
-        </ol>
-        <p>Sendo representada basicamente por:</p>
+        <h1>Árvores - Estrutura de Dados</h1>
+        <p>As árvores são estruturas de dados do <strong>subjconjunto dos grafos</strong>, de forma a modelar uma relação entre elemento a partir de <strong>vértices</strong> e <strong>arestas</strong>, onde o primeiro irá alocar os elementos e o segundo, trará a relação entre os mesmos. No caso das árvores, sempre existirá um <strong>nó central</strong> (elemento inicial) camado de <strong>nó raiz</strong>, o qual indica o início da árvore.</p>
+        <p>Os demais nós/elementos da árvore irão eceber 2 diferentes nomeclaturas, dependendo de seu nível. Onde os nós intermediáios (os quais estiverem entre a raiz e as folhas) serão chamados de <strong>nós intermediários</strong>. Já os nós que representam a base da árvore (os nós finais), são chamados de <strong>nós folhas</strong>.</p>
         <pre>
-              A        
-            /   \      
-            
-         B         C   
-       / | \        \ 
-      D  E  F        G
-      
-      
-      A = <strong>Raiz</strong>
-      
-      B/C = <strong>Nó interno</strong>
-      
-      D/E/F/G = <strong>Folha</strong>
+        A   
+      /   \
+     B     C
+          / \
+         D   E
+         
+    <strong>Raiz</strong> = A
+    <strong>Intermediário</strong> = C
+    <strong>Folhas</strong> = {B,D,E}
         </pre>
-        <p>Ou seja, há divisões de níveis (normalmente 3), sendo a primeira camada a <strong>raiz</strong> (o topo da árvore), a segunda camada <strong>nó interno</strong> (estando logo após a raiz, como um tronco) e por fim as <strong>folhas</strong> (sendo a base da árvore). Perceba qie uma noção de pirâmide é gerada, por mais que o sentido de árvore esteja de cabeça pra baixo. Além disso, há a implementação do conceito de <strong>subárvores</strong>, que relata que dado um nó de uma árvore, <strong>cada filho seu é considerado a raiz de uma subarvore</strong>, assim como o <strong>grau de cada nó é dado pela quantidade de filhos</strong>:</p>
+        <p>Podemos perceber qie a árvore segue uma estrutura <strong>hierárquica</strong>, onde nós se submetem a outros nós superiores até alcançar o nó raiz (seguindo uma ordem de nós pais e filhos). Outra característica que podemos perceber, é que as árvores são <strong>não-lineares</strong>, logo o percorrimento entre os nós não segue apenas um sentido, mas podendo se deslocar livremente.</p>
+        <p>Além disso, as árvores seguem uma característica de <strong>graus</strong> e <strong>sub-árvores</strong> (o qual está diretamente relacionado ao esquema de hierárquia). Basicamente, o grau de um nó e calculado pela sua quantidade de ramificações (nós filhos), onde nós que possuam 1 filho,são de grau 1 e assim por diante.</p>
+        <p>No caso da sub-árvore, se aplica a todo e qualquer nó que tenha X ou 1+x ramificações (nós filhos).</p>
         <pre>
-              A        
-            /   \      
-            
-         B         C   
-       / | \        \ 
-      D  E  F        G
-      
-      
-      A = <strong>Grau 2</strong>
-      
-      B = <strong>Grau 3</strong>
-      
-      C = <strong>Grau 1</strong>
-      
-      D/E/F/G = <strong>Grau 0</strong>
-        </pre>
-        <hr>
-        <ul>
-            <li><strong>Níveis de uma árvore</strong></li>
-                <p>Os níveis de uma árvore são dados a partir da divisão de hierarquia dos nós, logo o <strong>nível 0</strong> sempre será a <strong>raiz</strong>. Dessa forma, é contagem é continuada a partir de cada nível/divisão a baixo. Dito isso, é possível determinar a <strong>profundidade/altura</strong> de uma árvore a partir da quantidade de níveis presentes nela:</p>
-                <pre>
-              A        
-            /   \      
-            
-         B         C   
-       / | \        \ 
-      D  E  F        G
-      
-      
-      A = <strong>Nível 0</strong>
-      
-      B/C = <strong>Nível 1</strong>
-      
-      D/E/F/G = <strong>Nível 2</strong>
-      
-      <strong>Altura</strong> = 3 (3 níveis)
-                </pre>
-            <hr>
-            <li><strong>Árvores binárias</strong></li>
-            <p>No conceito de árvore binária, uma regra deve ser implementada, onde o fao de que <strong>cada nó só pode possuir no máximo 2 subarvores</strong> (ou nenhuma), podendo ser de três tipos:</p>
-            <ol>
-                <li>Esritamente</li>
-                    <p>Cada nó tem 0 ou 2 subarvores</p>
-                <li>Completa</li>
-                    <p>É uma árovre estritamente oinde todas as folhas estão no mesmo nível</p>
-                <li>Quase completa</li>
-                    <p>A diferença de altura entre as subarvores de um nó qualquer, é no máximo 1</p>
-            <p>Além disso, há o conceito que relata que uma árvore com raiz, possui a <strong>SAE</strong> (subarvore da esquerda) e a <strong>SAD</strong> (subarvore da direita), como no exemplo a seguir junto a implementação de vetores:</p>
-                <pre>
-              A        
-            /   \      
-            
-         B         C 
+        A   
+      /   \
+     B     C
+          / \
+         D   E
          
-           0   1   2 
-         | A | B | C |
-         
-         
-         Filho_Esq = 2*pai+1
-         
-         Filho_Dir = 2*pai+2
-                </pre>
-                
-            </ol>
-            <hr>
-            <li><strong>Implementação em C</strong></li>
-                <p>Logo, em seu conceito e implementação, <strong>ao inserir um novo elemento/nó</strong>, o mesmo dever ser <strong>comparado com seu superior</strong>, de forma a identificar se o novo é maior ou menor, onde se <strong>o novo elemento for menor, o mesmo é transferido para a sub-árvore esquerda</strong> e caso o <strong>novo elemento seja maior, o mesmo é transferido para a sub-árvore direita.</strong>. Caso haja outros elementos na subárvore, repete-se o mesmo procedimento até que se encontre um espaço NULL para alocar o novo elemento. Ou seja, ao inserir um novo elemento, ele é comparado com a raiz e desce para o outro nível, repete-se o procedimento até que o aloque. Como no exemplo a seguir:</p>
-                <pre>
-                     2
-                   /   \
-                  1     7
-          
-        Deseja-se então alocar uma variável X com o valor 5.
-        
-        Compara-se primeiramente com a raiz (caso maior-direita, caso menor-esquerda)
-        
-                    X > 2
-                    
-                     2
-                   /   \ X
-                  1     7
-                  
-        Há um elemento no próximo nível, o elemento 7. Então, repete-se o procedimento de comparação com o valor 7
-        
-                    X menor 7
-                    
-                    2
-                  /   \
-                 1     7
-                      /
-                     X
-                </pre>
-            <hr>
-            <li><strong>Árvore AVL</strong></li>
-                <p>Basicamente, se baseia em um tipo de <strong>validação</strong> para a árvore, tornando-a <strong>balanceada</strong> em relação à altura de suas sub-árvore, ou seja, <strong>para tornar uma árvore balanceada ou não, as suas sub-árvores devem ser analisadas</strong>.</p>
-                <p>Nesta análise, a <strong>altura</strong> que deve ser verificada, onde a <strong>diferença entre as alturas das sub-árvores de um elemento devem estar entre o conjunto [1,0,-1]</strong>, logo se a difereça estiver dentro deste conjunto, a árvore é balanceada. Caso contrário (diferença fora do conjunto), a árvore está desbalanceada. Por exemplo:</p>
-                <p><strong>OBS: A altura de uma sub-árvore NULL é igual a -1.</strong></p>
-                <pre>
-                10
-              /    \
-             1     26
-                  /  \
-                 15  50
-                 
-            -------Alturas------
-            
-            10 -> Altura = 2
-            
-            26 -> Altura = 1
-            
-            1/15/50 -> Altura = 0
-            
-            -------Balanceamento------
-            
-            1/15/50 -> -1 - (-1) = 0 -> <strong>BALANCEADO</strong>
-            
-            26/10 -> 0 - 0 = 0 -> <strong>BALANCEADO</strong>
-            
-            
-            
-    <strong>Porém, ao inserirmos um valor 3 e depois inserirmos um valor 5, continuará balanceado?</strong>        
+    <strong>Grau 0</strong> = {B,D,E}
+    <strong>Grau 1</strong> = C 
+    <strong>Grau 2</strong> = A
     
-                
-                  10        
-                /    \      
-               1      26   
-                \    /  \ 
-                 3  15  50
-                  \
-                   5 
-                  
-         -------Alturas------
-            
-            15/50/5 -> Altura = 0
-            
-            3/26 -> Altura = 1
-            
-            1 -> Altura = 2
-            
-            10 -> Altura = 3
-            
-        -------Balanceamento------
-        
-            5 -> -1 - (-1) = 0 -> <strong>BALANCEADO</strong>
-            
-            3 -> -1 - 0 = -1 -> <strong>BALANCEADO</strong>
-            
-            1 -> -1 - 1 = -2 -> <strong>NÃO BALANCEADO</strong>
-                </pre>
-            <p>Logo, a <strong>inserção de um elemento na árvore, pode desbalancea-la</strong>, tornando o fator de balanceamento de um elemento, fora do conjunto.</p>
-            <p>Para fazer com que a árvore volte a ser balanceada, é necessário fazer <strong>rotações</strong> em torno do elemento não balanceado, esta rotação poderá ser para <strong>esquerda ou direita</strong>, dependendo de <strong>qual lado o novo elemento foi inserido</strong>, ou seja, <strong>troca-se o elemento desbalanceado com a sua sub-árvore</strong>, por exemplo:</p>
-            <pre>
-            
-                  10        
-                /    \      
-               1      26   
-                \    /  \ 
-                 3  15  50
-                  \
-                   5 
-                  
-         -------Alturas------
-            
-            15/50/5 -> Altura = 0
-            
-            3/26 -> Altura = 1
-            
-            1 -> Altura = 2
-            
-            10 -> Altura = 3
-            
-        -------Balanceamento------
-        
-            5 -> -1 - (-1) = 0 -> <strong>BALANCEADO</strong>
-            
-            3 -> -1 - 0 = -1 -> <strong>BALANCEADO</strong>
-            
-            1 -> -1 - 1 = -2 -> <strong>NÃO BALANCEADO</strong>
-            
-            
-        <strong>Foi identificado que o elemento 1 está desbalanceado, então aplica-se a rotação. Perceba que o elemento inserido por fim (5) foi no lado direito, então a rotação será feito para o lado contrário:</strong>    
-            
-                  10        
-                /    \      
-               3      26   
-              / \    /  \ 
-             1   5  15  50
-             
-        -------Alturas------
-            
-            1/5/15/50 -> Altura = 0
-            
-            3/26 -> Altura = 1
-            
-            10 -> Altura = 2
-            
-        -------Balanceamento------
-        
-            1/5/15/50 -> -1 - (-1) = 0 -> <strong>BALANCEADO</strong>
-            
-            3/26 -> 0 - 0 = 0 -> <strong>BALANCEADO</strong>
-            
-            10 -> 1 - 1 = 0 -> <strong>BALANCEADO</strong>
-            
-            
-        <strong>Já em um exemplo 2, o conceito é o mesmo, com apenas uma diferença:</strong>
-                   
-                  X        
-                /   \      
-               Y     C   
-              / \     
-             A   B  
-            /
-            
-            -------Alturas------
-            
-            B/C -> Altura = H
-            
-            A -> Altura = H+1
-            
-            Y -> Altura = H+2
-            
-            X -> Altura = H+3
-            
-            -------Balanceamento------
-            
-            Y -> (H-1) - H = -1 -> <strong>BALANCEADO</strong>
-            
-            X -> (H+2) - H =  2 -> <strong>NÃO BALANCEADO</strong>
-            
-        <strong>Faz-se uma rotação para direita (troca X por Y)</strong>
-        
-                  Y        
-                /   \      
-               A     X   
-              /     / \     
-                   B   C  
-                  
-            -------Alturas------
-            
-            B/C -> Altura = H
-            
-            A/x -> Altura = H+1
-            
-            Y -> Altura = H+2
-            
-            -------Balanceamento------
-            
-            Y -> (H-1) - (H-1) = 0 -> <strong>BALANCEADO</strong>
-            
-            </pre>
-            <p>Perceba que após a rotação, <strong>X herdou a sub-árvore interna B</strong>, isso ocorrerá em <strong>qualquer rotação que tiver sub-árvores na parte interna da árvore</strong>:</p>
-            <pre>
-                  Y        
-                /   \      
-               A     X   
-              /     / \     
-                   B   C
-                      /
-                     T
-                     
-                     
-            A/X/C -> <strong>SUB-ÁRVORES EXTERNAS</strong>
-            
-            B/T -> <strong>SUB-ÁRVORES INTERNAS</strong>
-            </pre>
-            <p>Ou seja, <strong>ao inserir elemento na parte externa e gerar desbalanceamento, faz-se rotação SIMPLES</strong>. Porém, caso contrário, <strong>se o elemento for inserido na parte interna e gerar desbalanceamento, deverá ser realizada uma rotação DUPLA</strong></p>
-            <ul>
-                <li><strong>Rotação Dupla</strong></li>
-                <p>A rotação dupla ocorre quando a <strong>inserção do elemento é feita nas sub-árvores internas</strong>, para isso, duas rotações devem ser feitas, seguindo os mesmos princípios anteriores. A primeira rotação será feita para o <strong>lado contrário do elemento inserido</strong> e a segunda <strong>para o mesmo do elemento inserido</strong>, por exemplo:</p>
-                <pre>
-                  X        
-                /   \      
-               Y     SUBc   
-             /   \     
-          SUBa    Z   
-                /   \
-            SUBd    SUBe
-            
-            
-            -------Alturas------
-            
-            X = H+3
-            
-            Y = H+2
-            
-            SUBa/SUBc = H
-            
-            
-        <strong>Como Z foi inserido no lado direito, rode Y-Z para o lado contrário primeiro</strong>
-        
-                  X        
-                /   \      
-               Z     SUBc   
-             /   \     
-            Y    SUBe   
-          /   \
-       SUBa    SUBd
-       
-       <strong>Agora basta rodar X-Z para o lado que o elemento foi inserido (direito no caso)</strong>
-       
-                     Z   
-                     
-                /        \      
-               Y           X   
-             /   \        / \
-         SUBa    SUBd  SUBe SUBc   
- 
-                </pre>
-            </ul>
-            <p>Para uma visualização mais resumida e dinâmica, seguem algumas imagens:</p>
-            <ol>
-                <li>Rotação simples à direita</li>
-                <br>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/AVL_Rota%C3%A7%C3%A3o_Simples_%C3%A0_Direita.PNG/507px-AVL_Rota%C3%A7%C3%A3o_Simples_%C3%A0_Direita.PNG" alt="Descrição">
-                <br>
-                <br>
-                <li>Rotação simples à esquerda</li>
-                <br>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/AVL_Rota%C3%A7%C3%A3o_Simples_%C3%A0_Esquerda.PNG/540px-AVL_Rota%C3%A7%C3%A3o_Simples_%C3%A0_Esquerda.PNG" alt="Descrição">
-                <br>
-                <br>
-                <li>Rotação dupla à direita</li>
-                <br>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/AVL_Rota%C3%A7%C3%A3o_Dupla_%C3%A0_Direita.PNG/496px-AVL_Rota%C3%A7%C3%A3o_Dupla_%C3%A0_Direita.PNG" alt="Descrição">
-                <br>
-                <br>
-                <li>Rotação dupla à esquerda</li>
-                <br>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2c/AVL_Rota%C3%A7%C3%A3o_Dupla_%C3%A0_Esquerda.PNG" alt="Descrição">
-            </ol>
+    <strong>Subárvore C</strong>
+        </pre>
+        <h3>Altura da árvore</h3>
+        <p>Contando a partir da raiz da árvore, podemos separar as suas camadas em <strong>níveis</strong>, níveis os quais auxiliarão na definição da <strong>altura da árvore</strong>. Essas variáveis são importantes informaões que definem esta estrutura e a complementam.</p>
+        <p>O nível, ou niveis da árvore, são definidos pela <strong>decendência gerada a cada nós</strong>, onde a raiz é iniciada por zero:</p>
+        <pre>
+        A   
+      /   \
+     B     C
+          / \
+         D   E
+         
+    <strong>Lv 0</strong> = A
+    <strong>Lv 1</strong> = {B,C}
+    <strong>Lv 2</strong> = {D,E}
+        </pre>
+        <p>Já sua altura é definida a partir da contagem de <strong>quantidade de níveis</strong> apresentados na árvore</p>
+        <pre>
+    <strong>Altura</strong> = Lv0 + ... LvX-1 + LvX
+        </pre>
+        <p>Na árvore em questão (árvore binária de busca), algumas definições deveria ser represenrada, como:</p>
+        <ul>
+            <li>Cada nó poderá possuir somente 1 ou 2 filhos</li>
+            <br>
+            <li>Cada sub-árvore é definida por SAE (sub-árvore da esqueda) ou SAD (sub-árvore da direita)</li>
+            <br>
+            <li>Completa (Folhas no mesmo Lv) ou Incompleta (Falhas com difereça máxima de 1 Lv)</li>
         </ul>
+        <h3>Implementação</h3>
+        <p>Existem duas formas de implementação desta arquitetura de dados, as quais garantem um mesmo resultado, mas com diferentes complexidades:</p>
+        <ul>
+            <li><strong>Vetores</strong></li>
+                <p>A partir de vetores, sua ávore seguirá um esquema de <strong>indices</strong> e percorrimento entre eles. Onde ao definir a raiz no índice zero, seus filhos e sub-árvores serão localizados e inseridos por <strong>jumping de posições</strong>. Como no exemplo abaixo:</p>
+                <pre>
+             --- --- --- --- --- --- 
+            | A | B | C | D | E | F |
+             --- --- --- --- --- --- 
+              0   1   2   3   4   5
+              
+              
+                A
+              /   \
+             B     C
+            / \     \
+           D   E     F
+           
+           <strong>Raiz</strong> = A = 0
+           <strong>SAD</strong> = 2*pai + 2
+           <strong>SAE</strong> = 2*pai + 1
+                </pre>
+                <p>Dessa forma, a partir de qualquer nó pai, é possível alcançar seu nó filho da direira ou esquerda.</p>
+            <li><strong>Alocação dinâmica</strong></li>
+                <p>Esta vem a ser a implementaão mais indicada e completa seguindo um conceito semelhante ao de <strong>listas</strong>, onde elementos são criados, contendo 1 valor e 2 ponteiros (SAE e SAD):</p>
+                <pre>
+                -----------
+               |     A     |
+               |*SAE   *SAD|
+                -----------
+                /         \
+               /           \
+   -----------               -----------
+  |     B     |             |     C     |
+  |*SAE   *SAD|             |*SAE   *SAD|
+   -----------               -----------
+   /         \               /         \
+  /           \             /           \ 
+Null          Null         Null         Null
+                
+                </pre>
+                <p>Diante disso, um ponteiro deverá aponta para o ínicio (apontar para a raiz da árvore) e seguir as seguintes funções:</p>
+                <ol>
+                    <li>Criação da árvore</li>
+                    <br>
+                    <li>Inserção de elemento</li>
+                    <br>
+                    <li>Remoção de elemento</li>
+                    <br>
+                    <li>Busca de elemento</li>
+                    <br>
+                    <li>Informações:</li>
+                        <ul>
+                            <li>Vazia?</li>
+                            <li>Qtd nós?</li>
+                            <li>Altura?</li>
+                            <li>Lv do nó X?</li>
+                        </ul>
+                    <li>Destruição da lista</li>
+                </ol>
+        </ul>
+        <p>Diante disso, seguiremos para o passo a passo da escrita do script de árvores binárias:</p>
+        <ol>
+            <strong><li>Struct - Arvore</li></strong>
+                <p>Na definição de um nó que será inserido na árvore, ele deverá conter um <strong>valor</strong> e os <strong>2 apontadores</strong> que indicarão os seus nós filhos/sub-árvores (SAE e SAD), ou seja, aqui será criado o corpo/tipo da árvore e como seus elementos serão criados (os nós):</p>
+                <pre>
+            <strong>struct</strong> arvore{
+                <strong>int</strong> info;
+                <strong>int</strong> alt;
+                <strong>struct</strong> no *SAE;
+                <strong>struct</strong> no *SAD;
+
+            }
+            
+                </pre>
+                <p>Perceba que também foi definida uma variável <i>alt</i>, a qual servirá como indicador da altura da árvore. Além disso, vale lembrar que posteriormente será necessário sua definição como um tipo de variável, através do comando <i>typedef</i>.</p>
+            <strong><li>Criação da árvore</li></strong>
+                <p>Obviamente, a primeira função será a de criação da árvore binária, a qual se torna extremamente simples, onde o programador deve apenas definir um ponteiro que indicará <i>NULL</i>. Posteriormente, este será o ponteiro inicial que irá indica para a raiz da árvore, dando assim continuidade de seu percorrimento.</p>
+                <pre>
+            <strong>Arvore </strong>*criaArvore(<strong>void</strong>){
+                <strong>return</strong> NULL;
+            }
+                </pre>
+            <strong><li>Verificação de árvore vazia</li></strong>
+                <p>Outra função que se faz muito simples, bastando apenas verificar se a raiz da árvore está ou não apontanda para <i>NULL</i>:</p>
+                <pre>
+           <strong>int</strong> vazia(Arvore *raiz){
+                <strong>return</strong>(raiz==NULL);
+           } 
+                </pre>
+            <strong><li>Criação de nó (elemento)</li></strong>
+                <p>Aqui é perceptível uma diferença, pois na criação de listas, definiamos a criação do elemento junto a função de inserção do mesmo. Já em árvores, ocorre esta divisão, onde em uma função o elemento será criado e em outra, será inserido na árvore. Dessa forma, aqui precisaremos definir o valor do nó e seus apontadores SAE e SAD (que inicialmente serão indicados a <i>NULL</i>):</p>
+                <pre>
+            <strong>int</strong> criaNo(<strong>int</strong> valor){
+                Arvore *no;
+                no = (Arvore *)<strong>malloc</strong>(<strong>sizeof</strong>(Arvore));
+                no->info = valor;
+                no->SAE = NULL;
+                no->SAD = NULL;
+                
+                <strong>return</strong> no;
+            }
+                </pre>
+            <strong><li>Inserção de nó</li></strong>
+                <p>A inserção do nó deverá receber como parâmetro tanto a árvore em questão, como o nó que será inserido e foi definido anteriormente. Além disso, deve-se ressaltar que a verificação de árvore vazia se faz muito importante, pois caso a árvore esteja vazia, o seu primeiro nó será o nó raiz. Caso não esteja vazia, deverá sempre haver uma verificação para se o nó irá para a esquerda (SAE) ou se irá para a direita (SAD).</p>
+                <p>Portanto, pode-se concluir que um processo de <strong>recursividade</strong> deverá ser implementado nesta função de inserção:</p>
+                <pre>
+            Arvore *inserir(Arvore *raiz, Arvore *no){
+                <strong>if</strong>(vazia(raiz)){
+                    <strong>return</strong> no;
+                }<strong>else</strong>{
+                    <strong>if</strong>(no->info &lt; raiz->info){
+                        raiz->SAE = inserir(raiz->SAE, no);
+                    }<storng>else</storng>{
+                        raiz->SAD = inserir(raiz->SAD, no);
+                    }
+                    <strong>return</strong> raiz;
+                }
+            }
+                </pre>
+            <strong><li>Busca de nó</li></strong>
+                <p>O processo de busca de nó na árvore, fará um percorrimento por ela através de verificações de forma recursiva, até que o valor a ser procurado seja encontrado. Logo, essa busca será realizada ao percorrer toda a árvore:</p>
+                <pre>
+            Arvore *buscaNo(Arvore *raiz, <strong>int</strong> x){
+                <strong>if</strong>(raiz == NULL){
+                    <strong>return</strong> NULL;
+                }<strong>else</strong>{
+                    <strong>if</strong>(x == raiz->info){
+                        <strong>return</strong> raiz;
+                    }<strong>else</strong>{
+                        <strong>if</strong>(x &lt; raiz->info){
+                            <strong>return</strong> buscaNo(raiz->SAE, x);
+                        }<strong>else</strong>{
+                            <strong>return</strong> buscaNo(raiz->SAD, x);
+                        }
+                    }
+                }
+            }
+                </pre>
+            <strong><li>Exibição da árvore</li></strong>
+                <p>Por mais que fique confusa a visuaização da imagem em um programa, ao entender o seu processo, a clareza virá. Pois na exibição dos nós da árvore, contaremos com o auxílio de <i>&lt; e ></i>, os quais indicaram os filhos de um nó. Onde sempre que aparecer um <i>&lt;</i> significa que estão sendo exibidos os SAE do nó e quando aparecer o <i>></i>, significa que os SAD estão sendo exibidos. Há também a possibilidade de <i>&lt;></i>, o qual representa que o nó em questão não possui filho algum. Como no exemplo abaixo:</p>
+                 <pre>
+                A   
+              /   \
+             B     C
+            / \
+           D   E
+                 
+            A &lt;B &lt;D&lt;>&lt;>> &lt;E&lt;>&lt;>> > &lt;C&lt;>&lt;>>     
+                 
+  
+                </pre>
+                <p>Perceba que sua visualização é um tanto confusa, mas se prestar bem a atenção, verá que os sinais de <i>&lt; e ></i> representam como chaves, indicando os filhos de cada nós. Para sua implementação, este conceito se sustenta a partir de recursividade:</p>
+                <pre>
+            <strong>void</strong> exibir(Arvore raiz){
+                <strong>if</strong>(raiz == NULL){
+                    <strong>return</strong> 0;
+                }<strong>else</strong>{
+                    <strong>printf</strong>("%d&lt;",raiz->info);
+                    exibir(raiz->SAE);
+                    <strong>printf</strong>(">&lt;");
+                    exibir(raiz->SAD);
+                    printf(">");
+                }
+            }
+                </pre>
+            <strong><li>Remoção de nó</li></strong>
+                <p>Na remoção do elemento, algumas verificações devem ser feitas, como por exemplo se o nó a ser removido, é o nó raiz. Diante disso, temos as seguintes situações:</p>
+                <ul>
+                    <li><strong>Remover Folha</strong> - Caso seja uma folha, bastará dra um <i>free()</i> no elemento (já que seus apontadores são <i>NULL</i>) e fazer com que o seu pai, aponte para <i>NULL</i>.</li>
+                    <li><strong>Remover nó com 1 sub-árvore</strong> - Neste caso, haverá a necessidade de um <i>aux</i>, pois ao remover um elemento, o seu filho se tornará o novo filho do pai do nó a ser removido.</li>
+                    <li><strong>Remover nó com 2 sub-árvores</strong> - Este é mais complexo, pois nesta árvore apenas 2 filhos são permitidos por nó. Logo, é preciso substituir o nó removido pelo nó mais a direita na subárvore da esquerda ou o nó mais a esquerda da subárvore da direita.</li>
+                </ul>
+                <p>Portanto, sua implementação depende mito de qual nó e o tipo do nó que será removido, tendo assim a seguinte forma:</p>
+                <pre>
+            Arvore *remover(Arvore *raiz, <strong>int</strong> x){
+                Arvore *pai, *no, *p, *q;
+                no = busca(raiz,x,&pai);
+                <strong>if</strong>(no == NULL){
+                    <strong>return</strong> raiz;
+                }
+                <strong>if</strong>(no->SAE == NULL || no->SAD == NULL){
+                    <strong>if</strong>(no->SAE == NULL){
+                        q = no->SAD;
+                    }<strong>else</strong>{
+                        q = no->SAE;
+                    }
+                
+                }<strong>else</strong>{
+                    p = no;
+                    q = no->SAE;
+                    <strong>while</strong>(q->SAD){
+                        p = q;
+                        q = q->SAD;
+                    }
+                    <strong>if</strong>(p != no){
+                        p->SAD = p->SAE;
+                        q->SAE = no->SAE;
+                    }
+                    q->SAD = no->SAD;
+                }
+                <strong>if</strong>(pai == NULL){
+                    <strong>free</strong>(no);
+                    <strong>return</strong> q;
+                }
+                <strong>if</strong>(x &lt; pai->info){
+                    pai->SAE = q;
+                }<strong>else</strong>{
+                    pai->SAD = q;
+                }
+                <strong>free</strong>(no);
+                <strong>return</strong> raiz;
+            }
+                </pre>
+                <p>Peceba é necessário armazenar o <i>*pai</i> do nó a ser removido (uma vez que este assumirá os filhos do nó removido) e o <i>*no</i> que será o removido. Além disso, o chamador da função de <i>busca</i> que servirá para encontrar o nó a ser removido.</p>
+            <strong><li>Busca (remoção)</li></strong>
+                <p>Como dito anteriormente, o processo de remoção necessita do apoio da busca do elemento que será removido, seguindo a seguinte premissa:</p>
+                <pre>
+            Arvore *busca(Arvore *raiz, <strong>int</strong> x, Arvore **pai){
+                Arvore *no = raiz;
+                *pai = NULL;
+                <strong>while</strong>(no){
+                    <strong>if</strong>(no->info == x){
+                        <strong>return</strong> atual;
+                    }
+                    *pai = no;
+                    <strong>if</strong>(x &lt; no->info){
+                        no = no->SAE;
+                    }<strong>else</strong>{
+                        no = no->SAD;
+                    }
+                }
+                <strong>return</strong> NULL;
+            }
+                </pre>
+        </ol>
     </body>
 </html>
